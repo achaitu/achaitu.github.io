@@ -23,7 +23,7 @@ function scrambledString(
     this.string +
     ' <a href="#" onClick="' +
     this.objName +
-    '.initAnimatedBubbleSort();return false;">unscramble</a>';
+    '.initAnimatedBubbleSort();return false;" style="color: red;">unscramble</a>';
 }
 
 function rescramble() {
