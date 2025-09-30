@@ -25,8 +25,4 @@ jobs:
           # REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
           SOURCE: "./"
           TARGET: "public_html"
-          ARGS: "-az --delete"
-          EXCLUDE: |
-            .git*
-            .github*
-            README.md
+          ARGS: "-az --delete --chmod=F644,D755 --exclude='.git*' --exclude='.github*' --exclude='README.md'"
