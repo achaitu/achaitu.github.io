@@ -1,0 +1,32 @@
+name: Deploy to cPanel via SSH
+
+on:
+  push:
+    branches: [ "main" ]   # change to "master" if that's your default
+  workflow_dispatch: {}     # lets you manual-trigger from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # If you have a build step (Jekyll/Hugo/etc.), insert it here and
+      # change SOURCE below to the build output folder, e.g. "_site" or "dist".
+
+      - name: Rsync to server
+        uses: easingthemes/ssh-deploy@v5.1.0
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          # REMOTE_PORT is optional; only include if not 22:
+          # REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
+          SOURCE: "./"
+          TARGET: "public_html"
+          ARGS: "-az --delete"
+          EXCLUDE: |
+            .git*
+            .github*
+            README.md
