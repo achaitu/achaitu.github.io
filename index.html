@@ -1,290 +1,358 @@
 <!DOCTYPE HTML>
 <html lang="en">
-
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Chaitanya Amballa</title>
 
-  <meta name="author" content="Chaitanya Amballa">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- <link rel="stylesheet" type="text/css" href="stylesheet.css"> -->
-  <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
-  <!-- <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>"> -->
-  <link rel="icon" href="images/UIUC.png">
-
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="scramble.js"></script>
+
+  <!-- Fonts: serif body, sans headings, mono email -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="images/UIUC.png" />
+  <style>
+    :root {
+      --ink: #0b0b0d;
+      --muted: #5a5f72;
+      --uiuc: #13294b;
+      --accent: #f59e0b;
+      --chip: #f6f7f9;
+    }
+    html, body { background: #fafbfc; }
+    body {
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+    }
+    h1, h2, h3 { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    a { text-underline-offset: 3px; }
+
+    /* Contact chips (keep) */
+    .chip {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--chip);
+      border: 1px solid #e6e6ea;
+      border-radius: 999px;
+      padding: .25rem .7rem;
+      font-size: .9rem;
+      transition: background .2s ease;
+    }
+    .chip:hover { background: #eef0f3; }
+
+    /* Publication card (uniform for all) */
+    .pub {
+      display: flex; gap: 1.5rem;
+      padding: 1.25rem 1rem;
+      border-radius: .6rem;
+      border-left: 3px solid transparent;
+      transition: background .2s ease, box-shadow .2s ease;
+    }
+    .pub:hover { background: #fff; box-shadow: 0 2px 14px rgba(0,0,0,0.06); }
+
+    /* Thumbnail: cover + centered, consistent aspect ratio, crisper rendering */
+    .thumb {
+      width: 12rem;           /* a tad larger = less downscale blur */
+      aspect-ratio: 16 / 10;  /* consistent card shape */
+      height: auto;
+      object-fit: cover;
+      object-position: center center;
+      border-radius: .5rem;
+      border: 1px solid #e6e6ea;
+      background: #fff;
+      flex-shrink: 0;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: auto; /* fallback */
+    }
+
+    .pub .venue { color: var(--muted); font-size: .95rem; margin-bottom: .15rem; }
+    .pub .title { font-weight: 600; }
+    .pub .meta { color: var(--muted); margin-top: .15rem; }
+
+    /* Featured = SAME layout, just color + subtle animation */
+    .pub.featured {
+      background: #fff8eb;
+      border-left-color: var(--accent);
+      animation: faintGlow 2.25s ease-in-out 1;
+    }
+    @keyframes faintGlow {
+      0%   { box-shadow: 0 0 0 rgba(245,158,11,0); }
+      50%  { box-shadow: 0 0 0 6px rgba(245,158,11,.12); }
+      100% { box-shadow: 0 0 0 rgba(245,158,11,0); }
+    }
+
+    /* --- NEW flag you can toggle with class="new" on .pub --- */
+    .pub.new { position: relative; }
+    .pub.new::before {
+      content: "NEW";
+      position: absolute;
+      top: 10px;               /* adjust if you like */
+      right: 12px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font: 700 12px/1 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: #fff;
+      background: #ef4444;     /* bright red */
+      box-shadow: 0 1px 0 rgba(0,0,0,.1);
+      letter-spacing: .3px;
+      animation: newPulse 2.1s ease-in-out infinite;
+    }
+    @keyframes newPulse {
+      0%   { background: #ef4444; box-shadow: 0 0 0 0 rgba(239,68,68,.35); }
+      50%  { background: #b91c1c; box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+      100% { background: #ef4444; box-shadow: 0 0 0 0 rgba(239,68,68,.35); }
+    }
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .pub.new::before { animation: none; }
+    }
+
+    .plink { font-size: .95rem; color: #374151; }
+    .plink:hover { color: #111827; text-decoration: underline; }
+    .sep { color: #c4c6cf; margin: 0 .45rem; }
+
+    /* Mono email under photo: copyable, single line, centered */
+    .monoEmail {
+      font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      white-space: nowrap;        /* keep on one line */
+      font-size: 0.95rem;
+      letter-spacing: .1px;
+    }
+
+    /* Profile image: let it display near its natural size for clarity */
+    .profilePic {
+      max-width: 280px;           /* avoid over-shrinking which causes blur */
+      width: 100%;
+      height: auto;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: auto;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8">
 
-  <div class="w-3/5 mx-auto">
-    <nav class="flex justify-between items-center h-16">
-      <a href="#research" class="relative flex items-center justify-center w-20 h-8 rounded-none group">
-        <div class="absolute inset-0 bg-white rounded-md transform skew-x-0 group-hover:-skew-x-12 transition duration-300">
-        </div>
-        <span
-          class="z-10 text-black font-bold transform skew-x-0 group-hover:-skew-x-12 transition duration-300">Research</span>
-      </a>
-      <a href="#courses" class="relative flex items-center justify-center w-20 h-8 rounded-none group">
-        <div
-          class="absolute inset-0 bg-white rounded-md transform skew-x-0 group-hover:-skew-x-12 transition duration-300">
-        </div>
-        <span
-          class="z-10 text-black font-bold transform skew-x-0 group-hover:-skew-x-12 transition duration-300">Courses</span>
-      </a>
-      <a href="#publications" class="relative flex items-center justify-center w-32 h-8 rounded-none group">
-        <div class="absolute inset-0 bg-white rounded-md transform skew-x-0 group-hover:-skew-x-12 transition duration-300">
-        </div>
-        <span
-          class="z-10 text-black font-bold transform skew-x-0 group-hover:-skew-x-12 transition duration-300">Publications</span>
-      </a>
-      <!-- <a href="#news" class="relative flex items-center justify-center w-20 h-8 rounded-none group">
-        <div class="absolute inset-0 bg-white rounded-md transform skew-x-0 group-hover:-skew-x-12 transition duration-300">
-        </div>
-        <span class="z-10 text-black font-bold transform skew-x-0 group-hover:-skew-x-12 transition duration-300">News</span>
-      </a> -->
-      <a href="#misc" class="relative flex items-center justify-center w-20 h-8 rounded-none group">
-        <div
-          class="absolute inset-0 bg-white rounded-md transform skew-x-0 group-hover:-skew-x-12 transition duration-300">
-        </div>
-        <span class="z-10 text-black font-bold transform skew-x-0 group-hover:-skew-x-12 transition duration-300">Misc</span>
-      </a>
-    </nav>
-  </div>
-  
-
-
-
-
-
-
-
-  <div class="mx-auto max-w-screen-lg px-15 md:max-w-screen-md lg:max-w-screen-lg">
-
-    <div class="flex flex-col md:flex-row items-center md:justify-between">
-      <div class="w-full md:w-2/3 md:pr-8">
-        <h1 class="text-center md:text-center font-bold text-3xl">Chaitanya Amballa</h1>
-        <p class="text-center md:text-center text-blue-600 hover:text-green-500 py-2"><a
-            href="https://www.google.com/maps/place/Coordinated+Science+Laboratory/@40.1148734,-88.2292944"
-            target="_blank">241, Coordinated Science Laboratory</a></p>
-        <!-- <br> -->
-        <p class="text-center md:text-left py-10">I am a graduate student of the <a href="https://synrg.csl.illinois.edu"
-            class="text-blue-600 hover:text-green-500">SyNRG</a> lab in
-          the <a href="https://ece.illinois.edu/" class="text-blue-600 hover:text-green-500">ECE</a> department at <a
-            href="https://illinois.edu/" class="text-blue-600 hover:text-green-500">University of
-            Illinois Urbana-Champaign (UIUC)</a>, advised by <a href="https://croy.web.engr.illinois.edu/"
-            class="text-blue-600 hover:text-green-500">Prof. Romit
-            Roy Choudhury</a>.</p>
-        <!-- <br> -->
-        <p class="text-center md:text-left">Prior to joining UIUC, I worked as a Researcher at <a
-            href="https://www.tcs.com/research-and-innovation" class="text-blue-600 hover:text-green-500">TCS Research</a>,
-          Hyderabad for about 3 years. I completed
-          my undergraduate in Electrical Engineering from <a href="https://iittp.ac.in/"
-            class="text-blue-600 hover:text-green-500">Indian Insitute of Technology
-            Tirupati</a> (IIT Tirupati) in 2019. I've had the pleasure to work with <a
-            href="https://sites.google.com/iittp.ac.in/naveenkp/" class="text-blue-600 hover:text-green-500">Prof. K. P.
-            Naveen</a> for my undergraduate thesis.</p>
-      </div>
-
-      <div class="w-full md:w-1/3 mt-20">
-        <div class="flex justify-center md:justify-end">
-          <a href="images/chaitanya.jpeg"><img class="rounded-lg mb-4 md:ml-4" src="images/chaitanya.jpeg"
-              alt="profile photo"></a>
-        </div>
-        <p style="text-align:center">
-          <b>Email:</b>
-          <font id="email"></font>
+    <!-- Header (intro + photo side-by-side) -->
+    <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between mt-8">
+      <div class="w-full md:w-2/3 md:pr-10">
+        <h1 class="text-center md:text-left font-semibold text-4xl md:text-5xl text-[var(--uiuc)]">Chaitanya Amballa</h1>
+        <p class="text-center md:text-left text-[var(--muted)] mt-2">
+          PhD Student, ECE · <a class="text-blue-700 hover:text-green-600" href="https://illinois.edu/" target="_blank">University of Illinois Urbana–Champaign</a>
         </p>
-        <script>
-          var emailScramble = new scrambledString(document.getElementById('email'),
-            'emailScramble', 'amballa2@illinois.edu',
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]);
-          function revealEmail() {
-              emailScramble.initAnimatedBubbleSort();
-            }
-        </script>
-        <div class="flex justify-center">
-          <a href="data/Chaitanya_Amballa_CV.pdf" class="mr-2 text-blue-600 hover:text-green-500">CV</a> &nbsp/&nbsp
-          <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&"
-            class="mr-2 text-blue-600 hover:text-green-500">Scholar</a> &nbsp/&nbsp
-          <a href="https://github.com/achaitu/" class="mr-2 text-blue-600 hover:text-green-500">Github</a> &nbsp/&nbsp
-          <a href="https://www.linkedin.com/in/chaitanya-amballa/" class="text-blue-600 hover:text-green-500">LinkedIn</a>
+        <p class="text-center md:text-left mt-1">
+          <a class="text-blue-700 hover:text-green-600" href="https://sinrg.csl.illinois.edu" target="_blank">SiNRG</a> · advised by
+          <a class="text-blue-700 hover:text-green-600" href="https://croy.web.engr.illinois.edu/" target="_blank">Prof. Romit Roy Choudhury</a>
+        </p>
+        <!-- <p class="text-center md:text-left mt-2">
+          <a class="text-blue-700 hover:text-green-600" href="https://www.google.com/maps/place/Coordinated+Science+Laboratory/@40.1148734,-88.2292944" target="_blank">
+            241, Coordinated Science Laboratory
+          </a>
+        </p> -->
+
+        <p class="text-center md:text-left mt-6">
+          My research lies at the intersection of generative modeling, signal processing, and learning for spatial inference.
+        </p>
+
+        <!-- Keep these chips -->
+        <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
+          <a href="data/Chaitanya_Amballa_CV.pdf" class="chip" target="_blank">CV</a>
+          <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" class="chip" target="_blank">Google Scholar</a>
+          <a href="https://github.com/achaitu/" class="chip" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/chaitanya-amballa/" class="chip" target="_blank">LinkedIn</a>
         </div>
       </div>
-      <!-- <div align=center><a href='https://www.counter12.com'><img src='https://www.counter12.com/img-xcbA6CB3C3D869x7-48.gif'
-            border='0' alt='free counter'></a>
-        <script type='text/javascript' src='https://www.counter12.com/ad.js?id=xcbA6CB3C3D869x7'></script>
-      </div> -->
 
+      <div class="w-full md:w-1/3 mt-10 md:mt-0">
+        <div class="flex justify-center md:justify-end">
+          <a href="images/chaitanya.jpeg">
+            <img class="rounded-lg mb-3 md:ml-4 border border-gray-200 profilePic"
+                 src="images/chaitanya_banner.png"
+                 alt="profile photo"
+                 decoding="async" loading="lazy">
+          </a>
+        </div>
+        <!-- Copyable mono email, centered, single line -->
+        <p class="text-center md:text-right text-[var(--muted)]">
+          <span class="monoEmail">amballa2@illinois.edu</span>
+        </p>
+      </div>
     </div>
 
-    <div class="py-5">
-      <h2 class="text-lg font-bold" id="research">Research</h2>
-      <p class="text-md">
-        My research interests are broadly in the mix of reinforcement learning, signal processing and online
-        learning. I'm interested in understanding and developing reliable decisions with guarantees for various
-        real-world problems. Although, I'm driven by the application of these technologies to solve real-world
-        problems, I'm fairly interested in understanding and contributing on the theoretical front to these
-        applications. Currently, I'm working on generating 2D floor plans of indoor environments using trajectory
-        and WiFi data.
+    <!-- Research -->
+    <div class="py-8">
+      <h2 class="text-2xl md:text-3xl font-semibold" id="research">Research</h2>
+      <p class="mt-2">
+        Prior to UIUC, I was a Researcher at <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>, Hyderabad (3 years).
+        I received my B.Tech. in Electrical Engineering from <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019, advised by
+        <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
       </p>
     </div>
 
-    
-    <div class="py-5">
-      <h2 class="text-lg font-bold py-5" id="courses">Courses</h2>
-      <li>ECE 549: Computer Vision (Spring 2023)</li>
-      <li>ECE 534: Random Processes (Spring 2023)</li>
-      <li>ECE 586: MDPs and Reinforcement Learning (Fall 2022)</li>
-      <li>ECE 490: Intoduction to Optimization (Fall 2022)</li>
-    </div>
+    <!-- Publications -->
+    <div class="py-6">
+      <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications</h2>
 
-    <!-- <div class="py-5">
-      <h2 class="text-lg font-bold py-5" id="news">News</h2>
-    </div> -->
-
-
-    <div class="py-5">
-      <h2 class="text-lg font-bold py-5" id="publications">Publications</h2>
-      
-
-      <div class="flex pb-10">
-        <img class="object-fill h-30 w-48" src="images/UAI_22.png" alt="">
-        <div class="ml-20">
-            <strongred style="color:red;">[UAI'22]</strongred>
-            <a class="font-bold" href="https://proceedings.mlr.press/v180/bhat22a.html" target="“blank”">
-              Identifying near-optimal decisions in linear-in-parameter bandit models with continuous decision sets
-            </a>
-          </p>
-          <p>Sanjay P Bhat, <b>Chaitanya Amballa</b></p>
-          <p><i>Uncertainty in Artificial Intelligence (UAI), 2022</i></p>
-          <p class="mt-5">
-            <a href="https://proceedings.mlr.press/v180/bhat22a/bhat22a.pdf" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">PDF</a>
-            <a href="https://proceedings.mlr.press/v180/bhat22a/bhat22a-supp.pdf" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">Supp PDF
-              </a>
-            <!-- <a href="https://github.com/achaitu/" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">code</a> -->
+      <!-- NeurIPS 2025 (featured but identical structure) -->
+      <div class="pub featured new mt-2">
+        <img class="thumb"
+             src="images/echonerf_thumb.png"
+             alt="EchoNeRF thumbnail"
+             decoding="async" loading="lazy" />
+        <div>
+          <div class="venue">NeurIPS&nbsp;2025 </div>
+          <a class="title hover:underline" href="https://arxiv.org/abs/2505.22441" target="_blank">Can NeRFs See without Cameras?</a>
+          <p class="meta"><b>Chaitanya Amballa</b>, Sattwik Basu, Yu-Lin Wei, Zhijian Yang, Mehmet Ergezer, Romit Roy Choudhury</p>
+          <div class="mt-2">
+            <a class="plink" href="https://arxiv.org/abs/2505.22441" target="_blank">[arXiv]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://arxiv.org/pdf/2505.22441" target="_blank">[PDF]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://echonerf.github.io/" target="_blank">[Project]</a>
+          </div>
+          <p class="mt-3">
+            We adapt NeRFs to learn from multipath RF/audio signals to infer indoor structure without cameras,
+            enabling floorplan reconstruction and forward tasks like signal prediction.
           </p>
         </div>
       </div>
 
+      <!-- UAI 2022 -->
+      <div class="pub mt-2">
+        <img class="thumb"
+             src="images/UAI_22.png"
+             alt="UAI 2022"
+             decoding="async" loading="lazy" />
+        <div>
+          <div class="venue">UAI&nbsp;2022</div>
+          <a class="title hover:underline" href="https://proceedings.mlr.press/v180/bhat22a.html" target="_blank">
+            Identifying near-optimal decisions in linear-in-parameter bandit models with continuous decision sets
+          </a>
+          <p class="meta">Sanjay P. Bhat, <b>Chaitanya Amballa</b></p>
+          <div class="mt-2">
+            <a class="plink" href="https://proceedings.mlr.press/v180/bhat22a/bhat22a.pdf" target="_blank">[PDF]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://proceedings.mlr.press/v180/bhat22a/bhat22a-supp.pdf" target="_blank">[Supplement]</a>
+          </div>
+        </div>
+      </div>
 
-      <div class="flex pb-10">
-        <img class="object-fill h-30 w-48" src="images/AAAI_21.png" alt="">
-        <div class="ml-20">
-          <strongred style="color:red;">[AAAI'21]</strongred>
-          <a class="font-bold" href="https://ojs.aaai.org/index.php/AAAI/article/view/16821" target="“blank”">
+      <!-- AAAI 2021 -->
+      <div class="pub mt-2">
+        <img class="thumb"
+             src="images/AAAI_21.png"
+             alt="AAAI 2021"
+             decoding="async" loading="lazy" />
+        <div>
+          <div class="venue">AAAI&nbsp;2021</div>
+          <a class="title hover:underline" href="https://ojs.aaai.org/index.php/AAAI/article/view/16821" target="_blank">
             Computing an Efficient Exploration Basis for Learning with Univariate Polynomial Features
           </a>
-          </p>
-          <p><b>Chaitanya Amballa</b>, Manu K Gupta, Sanjay P Bhat</b></p>
-          <p><i>Association for the Advancement of Artificial Intelligence (AAAI), 2021</i></p>
-          <p class="mt-5">
-            <a href="https://cdn.aaai.org/ojs/16821/16821-13-20315-1-2-20210518.pdf?_gl=1*1ojyheh*_ga*MTQ4NDM3MTUxMS4xNjg0MTM1NDI4*_ga_CKNBPFEYPG*MTY4NDEzNTQyOC4xLjEuMTY4NDEzNTQ3NS4wLjAuMA.." target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">PDF</a>
-            <a href="data/pdfs/aaai_supplementary_material-9-11.pdf" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">Supp
-              PDF
-            </a>
-            <!-- <a href="https://github.com/achaitu/" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">code</a> -->
-          </p>
+          <p class="meta"><b>Chaitanya Amballa</b>, Manu K. Gupta, Sanjay P. Bhat</p>
+          <div class="mt-2">
+            <a class="plink" href="https://cdn.aaai.org/ojs/16821/16821-13-20315-1-2-20210518.pdf" target="_blank">[PDF]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="data/pdfs/aaai_supplementary_material-9-11.pdf" target="_blank">[Supplement]</a>
+          </div>
         </div>
       </div>
 
-
-      <div class="flex pb-10">
-        <img class="object-fill h-30 w-48" src="images/COMSNETS_21.png" alt="">
-        <div class="ml-20">
-          <strongred style="color:red;">[COMSNETS'21]</strongred>
-          <a class="font-bold" href="https://ieeexplore.ieee.org/document/9352942" target="“blank”">
+      <!-- COMSNETS 2021 -->
+      <div class="pub mt-2">
+        <img class="thumb"
+             src="images/COMSNETS_21.png"
+             alt="COMSNETS 2021"
+             decoding="async" loading="lazy" />
+        <div>
+          <div class="venue">COMSNETS&nbsp;2021</div>
+          <a class="title hover:underline" href="https://ieeexplore.ieee.org/document/9352942" target="_blank">
             Coexistence of LTE-Unlicensed and WiFi: A Reinforcement Learning Framework
           </a>
-          </p>
-          <p>K P Naveen, <b>Chaitanya Amballa</b></p>
-          <p><i>Uncertainty in Artificial Intelligence (UAI), 2022</i></p>
-          <p class="mt-5">
-            <a href="https://ieeexplore.ieee.org/document/9352942" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">PDF</a>
-            <!-- <a href="https://proceedings.mlr.press/v180/bhat22a/bhat22a-supp.pdf" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">Supp
-              PDF
-            </a>
-            <a href="https://github.com/shubhtuls/factored3d" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">code</a> -->
-          </p>
+          <p class="meta">K. P. Naveen, <b>Chaitanya Amballa</b></p>
+          <div class="mt-2">
+            <a class="plink" href="https://ieeexplore.ieee.org/document/9352942" target="_blank">[PDF]</a>
+          </div>
         </div>
       </div>
 
-
-      <div class="flex pb-10">
-        <img class="object-fill h-30 w-48" src="images/ICML_20.png" alt="">
-        <div class="ml-20">
-          <strongred style="color:red;">[ICML'20]</strongred>
-          <a class="font-bold" href="https://realworldml.github.io/files/cr/51_dynamic_pricing_cr.pdf" target="“blank”">
+      <!-- ICML Workshop 2020 -->
+      <div class="pub mt-2">
+        <img class="thumb"
+             src="images/ICML_20.png"
+             alt="ICML Workshop 2020"
+             decoding="async" loading="lazy" />
+        <div>
+          <div class="venue">ICML Workshop&nbsp;2020</div>
+          <a class="title hover:underline" href="https://realworldml.github.io/files/cr/51_dynamic_pricing_cr.pdf" target="_blank">
             Learning Algorithms for Dynamic Pricing: A Comparative Study
           </a>
-          </p>
-          <p><b>Chaitanya Amballa</b>, Narendhar Gugulothu, Manu K Gupta, Sanjay P Bhat</p>
-          <p><i>ICML Workshop on Real World Experiment Design and Active Learning</i></p>
-          <p class="mt-5">
-            <a href="https://realworldml.github.io/files/cr/51_dynamic_pricing_cr.pdf" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">PDF</a>
-          </p>
+          <p class="meta"><b>Chaitanya Amballa</b>, Narendhar Gugulothu, Manu K. Gupta, Sanjay P. Bhat</p>
+          <div class="mt-2">
+            <a class="plink" href="https://realworldml.github.io/files/cr/51_dynamic_pricing_cr.pdf" target="_blank">[PDF]</a>
+          </div>
         </div>
       </div>
 
-
-      <div class="flex pb-10">
-        <img class="object-fill h-30 w-48" src="images/SPCOM_20.png" alt="">
-        <div class="ml-20">
-          <strongred style="color:red;">[SPCOM'20]</strongred>
-          <a class="font-bold" href="https://ieeexplore.ieee.org/document/9179532" target="“blank”">
+      <!-- SPCOM 2020 -->
+      <div class="pub mt-2">
+        <img class="thumb"
+             src="images/SPCOM_20.png"
+             alt="SPCOM 2020"
+             decoding="async" loading="lazy" />
+        <div>
+          <div class="venue">SPCOM&nbsp;2020</div>
+          <a class="title hover:underline" href="https://ieeexplore.ieee.org/document/9179532" target="_blank">
             Coexistence of LTE-Unlicensed and WiFi: Optimization and Game-Theoretic Frameworks
           </a>
-          </p>
-          <p><b>Chaitanya Amballa</b>, K P Naveen</b></p>
-          <p><i>Uncertainty in Artificial Intelligence (UAI), 2022</i></p>
-          <p class="mt-5">
-            <a href="https://ieeexplore.ieee.org/document/9179532" target="_blank"
-              class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">PDF</a>
-          </p>
+          <p class="meta"><b>Chaitanya Amballa</b>, K. P. Naveen</p>
+          <div class="mt-2">
+            <a class="plink" href="https://ieeexplore.ieee.org/document/9179532" target="_blank">[PDF]</a>
+          </div>
         </div>
       </div>
-
-      
-
     </div>
 
+    <!-- Misc -->
+    <div class="py-8">
+      <h2 class="text-2xl md:text-3xl font-semibold" id="misc">Misc</h2>
 
-    <div class="py-5">
-      <h2 class="text-lg font-bold" id="misc">Misc</h2>
-    
-      <div class="flex items-center py-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 mr-2">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-        <!-- <a href="data/Btech_thesis.pdf" target="_blank" class="text-blue-600 hover:text-blue-800 font-medium">
-          B.Tech Thesis
-        </a> -->
-        <p>B.Tech Thesis:
-          <a href="data/Btech_thesis.pdf" target="_blank"
-            class="inline-block px-3 py-1 mr-2 text-sm font-medium text-black bg-gray-100 border border-black hover:bg-gray-200 hover:text-black rounded-lg transition-colors duration-300">PDF</a>
+      <!-- Courses -->
+      <div class="mt-6">
+        <h3 class="text-xl font-semibold">Selected Coursework</h3>
+        <ul class="list-disc pl-6 mt-2 space-y-1">
+          <li>ECE 598: Deep Generative Models</li>
+          <li>CS 598: Generative Models for Audio</li>
+          <li>ECE 549: Computer Vision</li>
+          <li>ECE 534: Random Processes</li>
+          <li>ECE 586: MDPs and Reinforcement Learning</li>
+          <li>ECE 490: Introduction to Optimization</li>
+        </ul>
+      </div>
+
+      <!-- MS Thesis -->
+      <div class="mt-4">
+        <h3 class="text-xl font-semibold">MS Thesis</h3>
+        <p class="text-[var(--muted)]">
+          <a href="data/Chaitanya_MS_thesis.pdf" target="_blank" class="plink">[PDF]</a>
         </p>
+      </div>
+
+      <!-- B.Tech Thesis -->
+      <div class="mt-6">
+        <h3 class="text-xl font-semibold">B.Tech Thesis</h3>
+        <a href="data/Chaitanya_Btech_thesis.pdf" target="_blank" class="plink">[PDF]</a>
       </div>
     </div>
 
-
-
+    <footer class="py-10 text-sm text-center text-[var(--muted)]">
+      © <span id="year"></span> Chaitanya Amballa · University of Illinois Urbana–Champaign
+    </footer>
   </div>
 
-
-
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
-
 </html>
