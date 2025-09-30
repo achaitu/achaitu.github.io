@@ -11,7 +11,7 @@
   <!-- Fonts: serif body, sans headings, mono email -->
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="icon" href="images/UIUC.png" />
+  <link rel="icon" href="images/logo.png" />
   <style>
     :root {
       --ink: #0b0b0d;
@@ -41,6 +41,24 @@
       transition: background .2s ease;
     }
     .chip:hover { background: #eef0f3; }
+
+    /* Compact high-contrast inline socials under the photo */ 
+    .socials-right .slink {
+      color: #1e3a8a;                 /* deep blue */
+      font-weight: 500;
+      text-decoration: none;
+      text-underline-offset: 3px;
+      letter-spacing: .1px;
+      font-size: 0.98rem;
+    }
+    .socials-right .slink:hover { text-decoration: underline; color: #0b1f5e; }
+
+    /* auto separators: dot between links */
+    .socials-right .slink + .slink::before {
+      content: "•";
+      color: #9aa3b2;                 /* subtle but visible */
+      margin: 0 .55rem;
+    }
 
     /* Publication card (uniform for all) */
     .pub {
@@ -129,6 +147,60 @@
       image-rendering: -webkit-optimize-contrast;
       image-rendering: auto;
     }
+
+
+    /* --- News timeline --- */
+    .news {
+      margin-top: 2rem;
+    }
+    .news h2 {
+      margin-bottom: .75rem;
+    }
+    .news-list {
+      list-style: none;
+      padding: 0;
+      margin: .5rem 0 0 0;
+    }
+    .news-item {
+      display: grid;
+      grid-template-columns: 7.5rem 1fr;  /* date | text */
+      gap: 1rem;
+      padding: .75rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .news-item:last-child {
+      border-bottom: none;
+    }
+    .news-date {
+      font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .news-text {
+      line-height: 1.6;
+    }
+    .news a { color: #1d4ed8; }
+    .news a:hover { color: #16a34a; text-decoration: underline; }
+
+    /* Optional: emphasize very recent items */
+    .news-item.recent .news-text {
+      background: #fff8eb;
+      border-left: 3px solid var(--accent);
+      border-radius: .4rem;
+      padding: .25rem .65rem;
+    }
+
+
+
+    /* Gently pull the News section upward on md+ to offset the tall right column */
+    @media (min-width: 768px) {
+      .news.pullup {
+        margin-top: clamp(-0rem, -5vw, -5rem);  /* adjust if you want more/less lift */
+        position: relative; z-index: 1;         /* keeps the heading above backgrounds */
+      }
+    }
+
+
   </style>
 </head>
 
@@ -154,15 +226,53 @@
 
         <p class="text-center md:text-left mt-6">
           My research lies at the intersection of generative modeling, signal processing, and learning for spatial inference.
+          More recently, I am interested in diffusion models for inverse problems.
+          I also received an MS degree in ECE from UIUC.
+          In a previous life, I have worked on reinforcement learning, bandits, and wireless networks, as a researcher at <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>.
+          I received my B.Tech. in Electrical Engineering from <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019, advised by
+          <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
+
+           <!-- and a B.Tech in Electrical Engineering from IIT Tirupati (2019). -->
+          <!-- Prior to UIUC, I was a Researcher at <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>, before which I received my B.Tech. in Electrical Engineering from <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019 advised by -->
+          <!-- <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>. -->
         </p>
 
         <!-- Keep these chips -->
-        <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
+        <!-- <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
           <a href="data/Chaitanya_Amballa_CV.pdf" class="chip" target="_blank">CV</a>
           <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" class="chip" target="_blank">Google Scholar</a>
           <a href="https://github.com/achaitu/" class="chip" target="_blank">GitHub</a>
           <a href="https://www.linkedin.com/in/chaitanya-amballa/" class="chip" target="_blank">LinkedIn</a>
-        </div>
+        </div> -->
+
+        <!-- simple socials -->
+         <!-- <p class="mt-4 text-center md:text-left text-[17px]">
+            <a href="data/Chaitanya_Amballa_CV.pdf" target="_blank"
+              class="underline underline-offset-2 hover:text-green-600">CV</a>
+            <span class="mx-2 text-gray-300">•</span>
+            <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank"
+              class="underline underline-offset-2 hover:text-green-600">Google Scholar</a>
+            <span class="mx-2 text-gray-300">•</span>
+            <a href="https://github.com/achaitu/" target="_blank"
+              class="underline underline-offset-2 hover:text-green-600">GitHub</a>
+            <span class="mx-2 text-gray-300">•</span>
+            <a href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank"
+              class="underline underline-offset-2 hover:text-green-600">LinkedIn</a>
+          </p> -->
+
+          <!-- <p class="mt-4 text-center md:text-left text-[17px]">
+            <a href="data/Chaitanya_Amballa_CV.pdf" target="_blank"
+              class="text-blue-700 hover:text-green-600">CV</a>
+            <span class="mx-2 text-gray-300">•</span>
+            <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank"
+              class="text-blue-700 hover:text-green-600">Google Scholar</a>
+            <span class="mx-2 text-gray-300">•</span>
+            <a href="https://github.com/achaitu/" target="_blank"
+              class="text-blue-700 hover:text-green-600">GitHub</a>
+            <span class="mx-2 text-gray-300">•</span>
+            <a href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank"
+              class="text-blue-700 hover:text-green-600">LinkedIn</a>
+          </p> -->
       </div>
 
       <div class="w-full md:w-1/3 mt-10 md:mt-0">
@@ -178,18 +288,72 @@
         <p class="text-center md:text-right text-[var(--muted)]">
           <span class="monoEmail">amballa2@illinois.edu</span>
         </p>
+        <!-- new socials -->
+        <div class="socials-right mt-2 text-center md:text-right">
+          <a class="slink" href="data/Chaitanya_Amballa_CV.pdf" target="_blank">CV</a>
+          <a class="slink" href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank">Scholar</a>
+          <a class="slink" href="https://github.com/achaitu/" target="_blank">GitHub</a>
+          <a class="slink" href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank">LinkedIn</a>
+        </div>
+        
       </div>
     </div>
 
+
+    <section class="news pullup" aria-labelledby="news">
+      <h2 id="news" class="text-2xl md:text-3xl font-semibold">News</h2>
+      <ul class="news-list">
+        <li class="news-item">
+          <div class="news-date">Sep 2025</div>
+          <div class="news-text">
+            <strong>EchoNeRF accepted to NeurIPS 2025</strong> 
+            <!-- — <a href="https://arxiv.org/abs/2505.22441" target="_blank">preprint</a> and -->
+            <!-- <a href="https://echonerf.github.io/" target="_blank">project page</a>. -->
+          </div>
+        </li>
+
+        <li class="news-item">
+          <div class="news-date">May 2025</div>
+          <div class="news-text">
+            <strong>Joined Amazon as an Applied Scientist Intern</strong>
+            <!-- Thesis available: <a href="data/Chaitanya_MS_thesis.pdf" target="_blank">[PDF]</a>. -->
+          </div>
+        </li>
+
+        <li class="news-item">
+          <div class="news-date">May 2025</div>
+          <div class="news-text">
+            <strong>Graduated with an M.S. in ECE from UIUC</strong>
+            <!-- Thesis available: <a href="data/Chaitanya_MS_thesis.pdf" target="_blank">[PDF]</a>. -->
+          </div>
+        </li>
+
+        <li class="news-item">
+          <div class="news-date">Apr 2025</div>
+          <div class="news-text">
+            <strong>Received Qualcomm Graduate Award</strong>
+          </div>
+        </li>
+
+        <!-- <li class="news-item">
+          <div class="news-date">Aug 2022</div>
+          <div class="news-text">
+            <strong>Joined UIUC as an M.S. student</strong>
+          </div>
+        </li> -->
+      </ul>
+    </section>
+
+
     <!-- Research -->
-    <div class="py-8">
+    <!-- <div class="py-8">
       <h2 class="text-2xl md:text-3xl font-semibold" id="research">Research</h2>
       <p class="mt-2">
         Prior to UIUC, I was a Researcher at <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>, Hyderabad (3 years).
         I received my B.Tech. in Electrical Engineering from <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019, advised by
         <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
       </p>
-    </div>
+    </div> -->
 
     <!-- Publications -->
     <div class="py-6">
@@ -316,14 +480,14 @@
 
     <!-- Misc -->
     <div class="py-8">
-      <h2 class="text-2xl md:text-3xl font-semibold" id="misc">Misc</h2>
+      <h2 class="text-2xl md:text-3xl font-semibold" id="misc">Miscellaneous</h2>
 
       <!-- Courses -->
       <div class="mt-6">
         <h3 class="text-xl font-semibold">Selected Coursework</h3>
         <ul class="list-disc pl-6 mt-2 space-y-1">
           <li>ECE 598: Deep Generative Models</li>
-          <li>CS 598: Generative Models for Audio</li>
+          <li>CS 598:  Generative Models for Audio</li>
           <li>ECE 549: Computer Vision</li>
           <li>ECE 534: Random Processes</li>
           <li>ECE 586: MDPs and Reinforcement Learning</li>
