@@ -8,198 +8,87 @@
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Fonts: serif body, sans headings, mono email -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="icon" href="images/logo.png" />
   <style>
-    :root {
-      --ink: #0b0b0d;
-      --muted: #5a5f72;
-      --uiuc: #13294b;
-      --accent: #f59e0b;
-      --chip: #f6f7f9;
+    :root{
+      --ink:#0b0b0d; --muted:#5a5f72; --uiuc:#13294b; --accent:#f59e0b; --chip:#f6f7f9;
     }
-    html, body { background: #fafbfc; }
-    body {
-      color: var(--ink);
-      font-family: 'EB Garamond', Georgia, serif;
-      font-size: 18px;
-      line-height: 1.75;
-    }
-    h1, h2, h3 { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-    a { text-underline-offset: 3px; }
+    html,body{background:#fafbfc}
+    body{color:var(--ink);font-family:'EB Garamond',Georgia,serif;font-size:18px;line-height:1.75}
+    h1,h2,h3{font-family:'Inter',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    a{text-underline-offset:3px}
 
-    /* Contact chips (keep) */
-    .chip {
-      display: inline-flex; align-items: center; gap: .4rem;
-      background: var(--chip);
-      border: 1px solid #e6e6ea;
-      border-radius: 999px;
-      padding: .25rem .7rem;
-      font-size: .9rem;
-      transition: background .2s ease;
+    /* Socials under photo */
+    .socials-right .slink{
+      color:#1e3a8a;font-weight:500;text-decoration:none;text-underline-offset:3px;letter-spacing:.1px;font-size:.98rem
     }
-    .chip:hover { background: #eef0f3; }
+    .socials-right .slink:hover{color:#0b1f5e;text-decoration:underline}
+    .socials-right .slink+.slink::before{content:"•";color:#9aa3b2;margin:0 .55rem}
 
-    /* Compact high-contrast inline socials under the photo */ 
-    .socials-right .slink {
-      color: #1e3a8a;                 /* deep blue */
-      font-weight: 500;
-      text-decoration: none;
-      text-underline-offset: 3px;
-      letter-spacing: .1px;
-      font-size: 0.98rem;
+    /* Publication cards */
+    .pub{display:flex;gap:1.5rem;padding:1.25rem 1rem;border-radius:.6rem;border-left:3px solid transparent;transition:background .2s,box-shadow .2s}
+    .pub:hover{background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+    .thumb{
+      width:12rem;aspect-ratio:16/10;height:auto;object-fit:cover;object-position:center center;
+      border-radius:.5rem;border:1px solid #e6e6ea;background:#fff;flex-shrink:0
     }
-    .socials-right .slink:hover { text-decoration: underline; color: #0b1f5e; }
+    .pub .venue{color:var(--muted);font-size:.95rem;margin-bottom:.15rem}
+    .pub .title{font-weight:600}
+    .pub .meta{color:var(--muted);margin-top:.15rem}
+    .pub.featured{background:#fff8eb;border-left-color:var(--accent);animation:faintGlow 2.25s ease-in-out 1}
+    @keyframes faintGlow{0%{box-shadow:0 0 0 rgba(245,158,11,0)}50%{box-shadow:0 0 0 6px rgba(245,158,11,.12)}100%{box-shadow:0 0 0 rgba(245,158,11,0)}}
+    .pub.new{position:relative}
+    .pub.new::before{
+      content:"NEW";position:absolute;top:10px;right:12px;padding:2px 9px;border-radius:999px;
+      font:700 12px/1 Inter,ui-sans-serif,-apple-system,Segoe UI,Roboto,sans-serif;color:#fff;background:#ef4444;
+      box-shadow:0 1px 0 rgba(0,0,0,.1);letter-spacing:.3px;animation:newPulse 2.1s ease-in-out infinite
+    }
+    @keyframes newPulse{0%{background:#ef4444;box-shadow:0 0 0 0 rgba(239,68,68,.35)}50%{background:#b91c1c;box-shadow:0 0 0 10px rgba(239,68,68,0)}100%{background:#ef4444;box-shadow:0 0 0 0 rgba(239,68,68,.35)}}
+    @media(prefers-reduced-motion:reduce){.pub.new::before{animation:none}}
 
-    /* auto separators: dot between links */
-    .socials-right .slink + .slink::before {
-      content: "•";
-      color: #9aa3b2;                 /* subtle but visible */
-      margin: 0 .55rem;
-    }
+    .plink{font-size:.95rem;color:#374151}.plink:hover{color:#111827;text-decoration:underline}
+    .sep{color:#c4c6cf;margin:0 .45rem}
 
-    /* Publication card (uniform for all) */
-    .pub {
-      display: flex; gap: 1.5rem;
-      padding: 1.25rem 1rem;
-      border-radius: .6rem;
-      border-left: 3px solid transparent;
-      transition: background .2s ease, box-shadow .2s ease;
-    }
-    .pub:hover { background: #fff; box-shadow: 0 2px 14px rgba(0,0,0,0.06); }
+    /* Email */
+    .monoEmail{font-family:'Source Code Pro',ui-monospace,Menlo,Consolas,monospace;white-space:nowrap;font-size:.95rem;letter-spacing:.1px}
 
-    /* Thumbnail: cover + centered, consistent aspect ratio, crisper rendering */
-    .thumb {
-      width: 12rem;           /* a tad larger = less downscale blur */
-      aspect-ratio: 16 / 10;  /* consistent card shape */
-      height: auto;
-      object-fit: cover;
-      object-position: center center;
-      border-radius: .5rem;
-      border: 1px solid #e6e6ea;
-      background: #fff;
-      flex-shrink: 0;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: auto; /* fallback */
-    }
+    /* Photo */
+    .profilePic{max-width:280px;width:100%;height:auto}
 
-    .pub .venue { color: var(--muted); font-size: .95rem; margin-bottom: .15rem; }
-    .pub .title { font-weight: 600; }
-    .pub .meta { color: var(--muted); margin-top: .15rem; }
+    /* News */
+    .news{margin-top:2rem}
+    .news h2{margin-bottom:.75rem}
+    .news-list{list-style:none;padding:0;margin:.5rem 0 0 0}
+    .news-item{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;padding:.75rem 0;border-bottom:1px solid #eee}
+    .news-item:last-child{border-bottom:none}
+    .news-date{font-family:'Source Code Pro',ui-monospace,Menlo,Consolas,monospace;color:var(--muted);white-space:nowrap}
+    .news-text{line-height:1.6}
 
-    /* Featured = SAME layout, just color + subtle animation */
-    .pub.featured {
-      background: #fff8eb;
-      border-left-color: var(--accent);
-      animation: faintGlow 2.25s ease-in-out 1;
-    }
-    @keyframes faintGlow {
-      0%   { box-shadow: 0 0 0 rgba(245,158,11,0); }
-      50%  { box-shadow: 0 0 0 6px rgba(245,158,11,.12); }
-      100% { box-shadow: 0 0 0 rgba(245,158,11,0); }
-    }
+    /* --- MOBILE-ONLY IMPROVEMENTS --- */
+    @media (max-width: 640px){ /* sm and below */
+      /* Header blocks order: Name -> Photo -> Description */
+      .blk-name{order:1}
+      .blk-photo{order:2}
+      .blk-desc{order:3;margin-top:.5rem}
 
-    /* --- NEW flag you can toggle with class="new" on .pub --- */
-    .pub.new { position: relative; }
-    .pub.new::before {
-      content: "NEW";
-      position: absolute;
-      top: 10px;               /* adjust if you like */
-      right: 12px;
-      padding: 2px 9px;
-      border-radius: 999px;
-      font: 700 12px/1 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      color: #fff;
-      background: #ef4444;     /* bright red */
-      box-shadow: 0 1px 0 rgba(0,0,0,.1);
-      letter-spacing: .3px;
-      animation: newPulse 2.1s ease-in-out infinite;
-    }
-    @keyframes newPulse {
-      0%   { background: #ef4444; box-shadow: 0 0 0 0 rgba(239,68,68,.35); }
-      50%  { background: #b91c1c; box-shadow: 0 0 0 10px rgba(239,68,68,0); }
-      100% { background: #ef4444; box-shadow: 0 0 0 0 rgba(239,68,68,.35); }
-    }
-    /* Respect users who prefer reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .pub.new::before { animation: none; }
-    }
+      /* Slightly smaller h1 on narrow phones */
+      h1{font-size:2rem;line-height:1.15}
 
-    .plink { font-size: .95rem; color: #374151; }
-    .plink:hover { color: #111827; text-decoration: underline; }
-    .sep { color: #c4c6cf; margin: 0 .45rem; }
-
-    /* Mono email under photo: copyable, single line, centered */
-    .monoEmail {
-      font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      white-space: nowrap;        /* keep on one line */
-      font-size: 0.95rem;
-      letter-spacing: .1px;
-    }
-
-    /* Profile image: let it display near its natural size for clarity */
-    .profilePic {
-      max-width: 280px;           /* avoid over-shrinking which causes blur */
-      width: 100%;
-      height: auto;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: auto;
-    }
-
-
-    /* --- News timeline --- */
-    .news {
-      margin-top: 2rem;
-    }
-    .news h2 {
-      margin-bottom: .75rem;
-    }
-    .news-list {
-      list-style: none;
-      padding: 0;
-      margin: .5rem 0 0 0;
-    }
-    .news-item {
-      display: grid;
-      grid-template-columns: 7.5rem 1fr;  /* date | text */
-      gap: 1rem;
-      padding: .75rem 0;
-      border-bottom: 1px solid #eee;
-    }
-    .news-item:last-child {
-      border-bottom: none;
-    }
-    .news-date {
-      font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .news-text {
-      line-height: 1.6;
-    }
-    .news a { color: #1d4ed8; }
-    .news a:hover { color: #16a34a; text-decoration: underline; }
-
-    /* Optional: emphasize very recent items */
-    .news-item.recent .news-text {
-      background: #fff8eb;
-      border-left: 3px solid var(--accent);
-      border-radius: .4rem;
-      padding: .25rem .65rem;
-    }
-
-
-
-    /* Gently pull the News section upward on md+ to offset the tall right column */
-    @media (min-width: 768px) {
-      .news.pullup {
-        margin-top: clamp(-0rem, -5vw, -5rem);  /* adjust if you want more/less lift */
-        position: relative; z-index: 1;         /* keeps the heading above backgrounds */
+      /* Pub cards become vertical (image on top, full width) */
+      .pub{flex-direction:column}
+      .thumb{
+        width:100%;max-height:220px;aspect-ratio:auto;object-fit:contain;background:#fff; /* no awkward crop */
       }
+      .pub.new::before{top:8px;right:10px}
     }
 
+    @media (min-width: 768px) {            
+      .blk-desc p  { margin-top: -5.0rem; margin-bottom: 0; }  /* description starts closer */
+      .news { margin-top: -2rem; }
+    }
 
   </style>
 </head>
@@ -207,166 +96,86 @@
 <body>
   <div class="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8">
 
-    <!-- Header (intro + photo side-by-side) -->
-    <div class="flex flex-col md:flex-row items-center md:items-start md:justify-between mt-8">
-      <div class="w-full md:w-2/3 md:pr-10">
-        <h1 class="text-center md:text-left font-semibold text-4xl md:text-5xl text-[var(--uiuc)]">Chaitanya Amballa</h1>
+    <div class="header mt-8 flex flex-col gap-6 md:grid md:grid-cols-[2fr_1fr] md:gap-8 md:items-start">
+
+      <!-- A) Name / affiliation -->
+      <div class="blk-name md:col-start-1 md:row-start-1">
+        <h1 class="text-center md:text-left font-semibold text-4xl md:text-5xl text-[var(--uiuc)]">
+          Chaitanya Amballa
+        </h1>
         <p class="text-center md:text-left text-[var(--muted)] mt-2">
-          PhD Student, ECE · <a class="text-blue-700 hover:text-green-600" href="https://illinois.edu/" target="_blank">University of Illinois Urbana–Champaign</a>
+          PhD Student, ECE ·
+          <a class="text-blue-700 hover:text-green-600" href="https://illinois.edu/" target="_blank">
+            University of Illinois Urbana–Champaign
+          </a>
         </p>
         <p class="text-center md:text-left mt-1">
-          <a class="text-blue-700 hover:text-green-600" href="https://sinrg.csl.illinois.edu" target="_blank">SiNRG</a> · advised by
-          <a class="text-blue-700 hover:text-green-600" href="https://croy.web.engr.illinois.edu/" target="_blank">Prof. Romit Roy Choudhury</a>
-        </p>
-        <!-- <p class="text-center md:text-left mt-2">
-          <a class="text-blue-700 hover:text-green-600" href="https://www.google.com/maps/place/Coordinated+Science+Laboratory/@40.1148734,-88.2292944" target="_blank">
-            241, Coordinated Science Laboratory
+          <a class="text-blue-700 hover:text-green-600" href="https://sinrg.csl.illinois.edu" target="_blank">SiNRG</a> ·
+          advised by
+          <a class="text-blue-700 hover:text-green-600" href="https://croy.web.engr.illinois.edu/" target="_blank">
+            Prof. Romit Roy Choudhury
           </a>
-        </p> -->
-
-        <p class="text-center md:text-left mt-6">
-          My research lies at the intersection of generative modeling, signal processing, and learning for spatial inference.
-          More recently, I am interested in diffusion models for inverse problems.
-          I also received an MS degree in ECE from UIUC.
-          In a previous life, I have worked on reinforcement learning, bandits, and wireless networks, as a researcher at <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>.
-          I received my B.Tech. in Electrical Engineering from <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019, advised by
-          <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
-
-           <!-- and a B.Tech in Electrical Engineering from IIT Tirupati (2019). -->
-          <!-- Prior to UIUC, I was a Researcher at <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>, before which I received my B.Tech. in Electrical Engineering from <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019 advised by -->
-          <!-- <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>. -->
         </p>
-
-        <!-- Keep these chips -->
-        <!-- <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
-          <a href="data/Chaitanya_Amballa_CV.pdf" class="chip" target="_blank">CV</a>
-          <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" class="chip" target="_blank">Google Scholar</a>
-          <a href="https://github.com/achaitu/" class="chip" target="_blank">GitHub</a>
-          <a href="https://www.linkedin.com/in/chaitanya-amballa/" class="chip" target="_blank">LinkedIn</a>
-        </div> -->
-
-        <!-- simple socials -->
-         <!-- <p class="mt-4 text-center md:text-left text-[17px]">
-            <a href="data/Chaitanya_Amballa_CV.pdf" target="_blank"
-              class="underline underline-offset-2 hover:text-green-600">CV</a>
-            <span class="mx-2 text-gray-300">•</span>
-            <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank"
-              class="underline underline-offset-2 hover:text-green-600">Google Scholar</a>
-            <span class="mx-2 text-gray-300">•</span>
-            <a href="https://github.com/achaitu/" target="_blank"
-              class="underline underline-offset-2 hover:text-green-600">GitHub</a>
-            <span class="mx-2 text-gray-300">•</span>
-            <a href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank"
-              class="underline underline-offset-2 hover:text-green-600">LinkedIn</a>
-          </p> -->
-
-          <!-- <p class="mt-4 text-center md:text-left text-[17px]">
-            <a href="data/Chaitanya_Amballa_CV.pdf" target="_blank"
-              class="text-blue-700 hover:text-green-600">CV</a>
-            <span class="mx-2 text-gray-300">•</span>
-            <a href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank"
-              class="text-blue-700 hover:text-green-600">Google Scholar</a>
-            <span class="mx-2 text-gray-300">•</span>
-            <a href="https://github.com/achaitu/" target="_blank"
-              class="text-blue-700 hover:text-green-600">GitHub</a>
-            <span class="mx-2 text-gray-300">•</span>
-            <a href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank"
-              class="text-blue-700 hover:text-green-600">LinkedIn</a>
-          </p> -->
       </div>
 
-      <div class="w-full md:w-1/3 mt-10 md:mt-0">
+      <!-- B) Photo + email + socials (spans both rows on the right) -->
+      <!-- <div class="blk-photo md:col-start-2 md:row-start-1 md:row-span-2 md:justify-self-end w-full"> -->
+      <div class="blk-photo md:col-start-2 md:row-start-1 md:row-span-2 md:justify-self-end w-full md:mt-5">
+
         <div class="flex justify-center md:justify-end">
           <a href="images/chaitanya.jpeg">
             <img class="rounded-lg mb-3 md:ml-4 border border-gray-200 profilePic"
-                 src="images/chaitanya_banner.png"
-                 alt="profile photo"
-                 decoding="async" loading="lazy">
+                src="images/chaitanya_banner.png" alt="profile photo" decoding="async" loading="lazy">
           </a>
         </div>
-        <!-- Copyable mono email, centered, single line -->
         <p class="text-center md:text-right text-[var(--muted)]">
           <span class="monoEmail">amballa2@illinois.edu</span>
         </p>
-        <!-- new socials -->
         <div class="socials-right mt-2 text-center md:text-right">
           <a class="slink" href="data/pdfs/Chaitanya_Amballa_CV.pdf" target="_blank">CV</a>
           <a class="slink" href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank">Scholar</a>
           <a class="slink" href="https://github.com/achaitu/" target="_blank">GitHub</a>
           <a class="slink" href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank">LinkedIn</a>
         </div>
-        
+      </div>
+
+      <!-- C) Description (now directly under the name on desktop) -->
+      <div class="blk-desc md:col-start-1 md:row-start-2 md:pr-10">
+      <!-- <div class="blk-desc md:col-start-1 md:row-start-2 md:pr-10 md:mt-10000.5"> -->
+        <p class="text-center md:text-left">
+          My research lies at the intersection of generative modeling, signal processing, and learning for spatial inference.
+          More recently, I am interested in diffusion models for inverse problems. I also received an MS degree in ECE from UIUC.
+          In a previous life, I have worked on reinforcement learning, bandits, and wireless networks, as a researcher at
+          <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>.
+          I received my B.Tech. in Electrical Engineering from
+          <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019,
+          advised by <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
+        </p>
       </div>
     </div>
 
 
+
+    <!-- News (unchanged, with small pull-up on desktop) -->
     <section class="news pullup" aria-labelledby="news">
       <h2 id="news" class="text-2xl md:text-3xl font-semibold">News</h2>
       <ul class="news-list">
-        <li class="news-item">
-          <div class="news-date">Sep 2025</div>
-          <div class="news-text">
-            <strong>EchoNeRF accepted to NeurIPS 2025</strong> 
-            <!-- — <a href="https://arxiv.org/abs/2505.22441" target="_blank">preprint</a> and -->
-            <!-- <a href="https://echonerf.github.io/" target="_blank">project page</a>. -->
-          </div>
-        </li>
-
-        <li class="news-item">
-          <div class="news-date">May 2025</div>
-          <div class="news-text">
-            <strong>Joined Amazon as an Applied Scientist Intern</strong>
-            <!-- Thesis available: <a href="data/Chaitanya_MS_thesis.pdf" target="_blank">[PDF]</a>. -->
-          </div>
-        </li>
-
-        <li class="news-item">
-          <div class="news-date">May 2025</div>
-          <div class="news-text">
-            <strong>Graduated with an M.S. in ECE from UIUC</strong>
-            <!-- Thesis available: <a href="data/Chaitanya_MS_thesis.pdf" target="_blank">[PDF]</a>. -->
-          </div>
-        </li>
-
-        <li class="news-item">
-          <div class="news-date">Apr 2025</div>
-          <div class="news-text">
-            <strong>Received Qualcomm Graduate Award</strong>
-          </div>
-        </li>
-
-        <!-- <li class="news-item">
-          <div class="news-date">Aug 2022</div>
-          <div class="news-text">
-            <strong>Joined UIUC as an M.S. student</strong>
-          </div>
-        </li> -->
+        <li class="news-item"><div class="news-date">Sep 2025</div><div class="news-text"><strong>EchoNeRF accepted to NeurIPS 2025</strong></div></li>
+        <li class="news-item"><div class="news-date">May 2025</div><div class="news-text"><strong>Joined Amazon as an Applied Scientist Intern</strong></div></li>
+        <li class="news-item"><div class="news-date">May 2025</div><div class="news-text"><strong>Graduated with an M.S. in ECE from UIUC</strong></div></li>
+        <li class="news-item"><div class="news-date">Apr 2025</div><div class="news-text"><strong>Received Qualcomm Graduate Award</strong></div></li>
       </ul>
     </section>
-
-
-    <!-- Research -->
-    <!-- <div class="py-8">
-      <h2 class="text-2xl md:text-3xl font-semibold" id="research">Research</h2>
-      <p class="mt-2">
-        Prior to UIUC, I was a Researcher at <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>, Hyderabad (3 years).
-        I received my B.Tech. in Electrical Engineering from <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019, advised by
-        <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
-      </p>
-    </div> -->
 
     <!-- Publications -->
     <div class="py-6">
       <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications</h2>
 
-      <!-- NeurIPS 2025 (featured but identical structure) -->
+      <!-- NeurIPS 2025 -->
       <div class="pub featured new mt-2">
-        <img class="thumb"
-             src="images/echonerf_thumb.png"
-             alt="EchoNeRF thumbnail"
-             decoding="async" loading="lazy" />
+        <img class="thumb" src="images/echonerf_thumb.png" alt="EchoNeRF thumbnail" decoding="async" loading="lazy">
         <div>
-          <div class="venue">NeurIPS&nbsp;2025 </div>
+          <div class="venue">NeurIPS&nbsp;2025</div>
           <a class="title hover:underline" href="https://arxiv.org/abs/2505.22441" target="_blank">Can NeRFs See without Cameras?</a>
           <p class="meta"><b>Chaitanya Amballa</b>, Sattwik Basu, Yu-Lin Wei, Zhijian Yang, Mehmet Ergezer, Romit Roy Choudhury</p>
           <div class="mt-2">
@@ -385,10 +194,7 @@
 
       <!-- UAI 2022 -->
       <div class="pub mt-2">
-        <img class="thumb"
-             src="images/UAI_22.png"
-             alt="UAI 2022"
-             decoding="async" loading="lazy" />
+        <img class="thumb" src="images/UAI_22.png" alt="UAI 2022" decoding="async" loading="lazy">
         <div>
           <div class="venue">UAI&nbsp;2022</div>
           <a class="title hover:underline" href="https://proceedings.mlr.press/v180/bhat22a.html" target="_blank">
@@ -405,10 +211,7 @@
 
       <!-- AAAI 2021 -->
       <div class="pub mt-2">
-        <img class="thumb"
-             src="images/AAAI_21.png"
-             alt="AAAI 2021"
-             decoding="async" loading="lazy" />
+        <img class="thumb" src="images/AAAI_21.png" alt="AAAI 2021" decoding="async" loading="lazy">
         <div>
           <div class="venue">AAAI&nbsp;2021</div>
           <a class="title hover:underline" href="https://ojs.aaai.org/index.php/AAAI/article/view/16821" target="_blank">
@@ -425,10 +228,7 @@
 
       <!-- COMSNETS 2021 -->
       <div class="pub mt-2">
-        <img class="thumb"
-             src="images/COMSNETS_21.png"
-             alt="COMSNETS 2021"
-             decoding="async" loading="lazy" />
+        <img class="thumb" src="images/COMSNETS_21.png" alt="COMSNETS 2021" decoding="async" loading="lazy">
         <div>
           <div class="venue">COMSNETS&nbsp;2021</div>
           <a class="title hover:underline" href="https://ieeexplore.ieee.org/document/9352942" target="_blank">
@@ -443,10 +243,7 @@
 
       <!-- ICML Workshop 2020 -->
       <div class="pub mt-2">
-        <img class="thumb"
-             src="images/ICML_20.png"
-             alt="ICML Workshop 2020"
-             decoding="async" loading="lazy" />
+        <img class="thumb" src="images/ICML_20.png" alt="ICML Workshop 2020" decoding="async" loading="lazy">
         <div>
           <div class="venue">ICML Workshop&nbsp;2020</div>
           <a class="title hover:underline" href="https://realworldml.github.io/files/cr/51_dynamic_pricing_cr.pdf" target="_blank">
@@ -461,10 +258,7 @@
 
       <!-- SPCOM 2020 -->
       <div class="pub mt-2">
-        <img class="thumb"
-             src="images/SPCOM_20.png"
-             alt="SPCOM 2020"
-             decoding="async" loading="lazy" />
+        <img class="thumb" src="images/SPCOM_20.png" alt="SPCOM 2020" decoding="async" loading="lazy">
         <div>
           <div class="venue">SPCOM&nbsp;2020</div>
           <a class="title hover:underline" href="https://ieeexplore.ieee.org/document/9179532" target="_blank">
@@ -481,29 +275,23 @@
     <!-- Misc -->
     <div class="py-8">
       <h2 class="text-2xl md:text-3xl font-semibold" id="misc">Miscellaneous</h2>
-
-      <!-- Courses -->
       <div class="mt-6">
         <h3 class="text-xl font-semibold">Selected Coursework</h3>
         <ul class="list-disc pl-6 mt-2 space-y-1">
           <li>ECE 598: Deep Generative Models</li>
-          <li>CS 598:  Generative Models for Audio</li>
+          <li>CS 598: Generative Models for Audio</li>
           <li>ECE 549: Computer Vision</li>
           <li>ECE 534: Random Processes</li>
           <li>ECE 586: MDPs and Reinforcement Learning</li>
           <li>ECE 490: Introduction to Optimization</li>
         </ul>
       </div>
-
-      <!-- MS Thesis -->
       <div class="mt-4">
         <h3 class="text-xl font-semibold">MS Thesis</h3>
         <p class="text-[var(--muted)]">
           <a href="data/pdfs/Chaitanya_MS_thesis.pdf" target="_blank" class="plink">[PDF]</a>
         </p>
       </div>
-
-      <!-- B.Tech Thesis -->
       <div class="mt-6">
         <h3 class="text-xl font-semibold">B.Tech Thesis</h3>
         <a href="data/pdfs/Chaitanya_Btech_thesis.pdf" target="_blank" class="plink">[PDF]</a>
@@ -515,8 +303,6 @@
     </footer>
   </div>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById('year').textContent=new Date().getFullYear()</script>
 </body>
 </html>
