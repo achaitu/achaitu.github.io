@@ -154,9 +154,9 @@
           My research lies at the intersection of generative modeling, signal processing, and learning for spatial inference.
           More recently, I am interested in diffusion models for inverse problems. I also received an MS degree in ECE from UIUC.
           In a previous life, I have worked on reinforcement learning, bandits, and wireless networks, as a researcher at
-          <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a>.
+          <a class="text-blue-700 hover:text-green-600" href="https://www.tcs.com/research-and-innovation" target="_blank">TCS Research</a> under <a class="text-blue-700 hover:text-green-600" href="https://scholar.google.com/citations?user=CL6xIH8AAAAJ&hl=en" target="_blank"> Dr. Sanjay Bhat</a>.
           I received my B.Tech. in Electrical Engineering from
-          <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a> in 2019,
+          <a class="text-blue-700 hover:text-green-600" href="https://iittp.ac.in/" target="_blank">IIT Tirupati</a>,
           advised by <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
         </p>
       </div>
@@ -168,6 +168,7 @@
     <section class="news pullup" aria-labelledby="news">
       <h2 id="news" class="text-2xl md:text-3xl font-semibold">News</h2>
       <ul class="news-list">
+        <li class="news-item"><div class="news-date">Jan 2026</div><div class="news-text"><strong>CoGuide accepted to ICLR 2026</strong></div></li>
         <li class="news-item"><div class="news-date">Sep 2025</div><div class="news-text"><strong>EchoNeRF accepted to NeurIPS 2025</strong></div></li>
         <li class="news-item"><div class="news-date">May 2025</div><div class="news-text"><strong>Joined Amazon as an Applied Scientist Intern</strong></div></li>
         <li class="news-item"><div class="news-date">May 2025</div><div class="news-text"><strong>Graduated with an M.S. in ECE from UIUC</strong></div></li>
@@ -177,15 +178,41 @@
 
     <!-- Publications -->
     <div class="py-6">
-      <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications</h2>
+      <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications <span style="font-size: 0.75rem; font-weight: 400; color: var(--muted);">(*=equal contribution, <span style="display: inline-block; width: 1.5rem; height: 0.85rem; background: #fff8eb; border: 1px solid #f59e0b; border-radius: 0.25rem; vertical-align: middle; margin: 0 0.2rem;"></span>=highlights)</span></h2>
+
+      <!-- ICLR 2026 -->
+      <div class="pub featured new mt-2">
+        <img class="thumb" src="images/coguide_thumb.png" alt="CoGuide thumbnail" decoding="async" loading="lazy">
+        <div>
+          <div class="venue">ICLR&nbsp;2026</div>
+          <a class="title hover:underline" href="https://arxiv.org/pdf/2509.26489" target="_blank">CoGuide: Contrastive Diffusion Guidance for Spatial Inverse Problems</a>
+          <p class="meta">Sattwik Basu*, <b>Chaitanya Amballa*</b>, Zhongweiyang Xu, Jorge Vančo Sampedro, Srihari Nelakuditi, Romit Roy Choudhury</p>
+          <p class="mt-3">
+            We reconstruct indoor floorplans from sparse user trajectories by steering a diffusion prior with a (surrogate) likelihood score from a contrastive trajectory–layout embedding space.
+          </p>
+        </div>
+      </div>
+
+      <!-- HotMobile 2026 -->
+      <div class="pub new mt-4">
+        <img class="thumb" src="images/hotmobile_thumb.png" alt="HotMobile thumbnail" decoding="async" loading="lazy">
+        <div>
+          <div class="venue">HotMobile&nbsp;2026</div>
+          <a class="title hover:underline" href="#" target="_blank">Inferring Indoor Layouts using Audio</a>
+          <p class="meta">Zhijian Yang, Sattwik Basu*, <b>Chaitanya Amballa*</b>, Debottam Dutta, Srihari Nelakuditi, Romit Roy Choudhury</p>
+          <div class="mt-2">
+            <a class="plink" href="#" target="_blank">[PDF]</a>
+          </div>
+        </div>
+      </div>
 
       <!-- NeurIPS 2025 -->
-      <div class="pub featured new mt-2">
+      <div class="pub featured mt-4">
         <img class="thumb" src="images/echonerf_thumb.png" alt="EchoNeRF thumbnail" decoding="async" loading="lazy">
         <div>
           <div class="venue">NeurIPS&nbsp;2025</div>
           <a class="title hover:underline" href="https://arxiv.org/abs/2505.22441" target="_blank">Can NeRFs See without Cameras?</a>
-          <p class="meta"><b>Chaitanya Amballa</b>, Sattwik Basu, Yu-Lin Wei, Zhijian Yang, Mehmet Ergezer, Romit Roy Choudhury</p>
+          <p class="meta"><b>Chaitanya Amballa</b>, Yu-Lin Wei, Sattwik Basu, Zhijian Yang, Mehmet Ergezer, Romit Roy Choudhury</p>
           <div class="mt-2">
             <a class="plink" href="https://arxiv.org/abs/2505.22441" target="_blank">[arXiv]</a>
             <span class="sep">•</span>
@@ -201,7 +228,7 @@
       </div>
 
       <!-- UAI 2022 -->
-      <div class="pub mt-2">
+      <div class="pub mt-4">
         <img class="thumb" src="images/UAI_22.png" alt="UAI 2022" decoding="async" loading="lazy">
         <div>
           <div class="venue">UAI&nbsp;2022</div>
@@ -218,7 +245,7 @@
       </div>
 
       <!-- AAAI 2021 -->
-      <div class="pub mt-2">
+      <div class="pub mt-4">
         <img class="thumb" src="images/AAAI_21.png" alt="AAAI 2021" decoding="async" loading="lazy">
         <div>
           <div class="venue">AAAI&nbsp;2021</div>
@@ -235,7 +262,7 @@
       </div>
 
       <!-- COMSNETS 2021 -->
-      <div class="pub mt-2">
+      <div class="pub mt-4">
         <img class="thumb" src="images/COMSNETS_21.png" alt="COMSNETS 2021" decoding="async" loading="lazy">
         <div>
           <div class="venue">COMSNETS&nbsp;2021</div>
@@ -250,7 +277,7 @@
       </div>
 
       <!-- ICML Workshop 2020 -->
-      <div class="pub mt-2">
+      <div class="pub mt-4">
         <img class="thumb" src="images/ICML_20.png" alt="ICML Workshop 2020" decoding="async" loading="lazy">
         <div>
           <div class="venue">ICML Workshop&nbsp;2020</div>
@@ -265,7 +292,7 @@
       </div>
 
       <!-- SPCOM 2020 -->
-      <div class="pub mt-2">
+      <div class="pub mt-4">
         <img class="thumb" src="images/SPCOM_20.png" alt="SPCOM 2020" decoding="async" loading="lazy">
         <div>
           <div class="venue">SPCOM&nbsp;2020</div>
@@ -309,7 +336,7 @@
     <footer class="py-10 text-sm text-center text-[var(--muted)]">
       <!-- © <span id="year"></span> Chaitanya Amballa · University of Illinois Urbana–Champaign -->
        © <span id="year"></span> Chaitanya Amballa
-        <span class="block sm:inline">· University of Illinois&nbsp;Urbana–Champaign</span>
+        <!-- <span class="block sm:inline">· University of Illinois&nbsp;Urbana–Champaign</span> -->
     </footer>
   </div>
 
