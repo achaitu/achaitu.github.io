@@ -9,6 +9,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Inter:wght@500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="icon" href="images/logo.png" />
@@ -32,13 +34,15 @@
     .pub{display:flex;gap:1.5rem;padding:1.25rem 1rem;border-radius:.6rem;border-left:3px solid transparent;transition:background .2s,box-shadow .2s}
     .pub:hover{background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.06)}
     .thumb{
-      width:12rem;aspect-ratio:16/10;height:auto;object-fit:cover;object-position:center center;
-      border-radius:.5rem;border:1px solid #e6e6ea;background:#fff;flex-shrink:0
+      width:12rem;height:8rem;object-fit:contain;
+      /* width:12rem;height:auto;object-fit:contain; */
+      border-radius:.5rem;border:1px solid #e6e6ea;background:#fff;flex-shrink:0;align-self:flex-start;
     }
+    .pub.featured .thumb{height:12rem;}
     .pub .venue{color:var(--muted);font-size:.95rem;margin-bottom:.15rem}
     .pub .title{font-weight:600}
     .pub .meta{color:var(--muted);margin-top:.15rem}
-    .pub.featured{background:#fff8eb;border-left-color:var(--accent);animation:faintGlow 2.25s ease-in-out 1}
+    .pub.featured{background:#fff8eb;/* border-left-color:var(--accent); */animation:faintGlow 2.25s ease-in-out 1}
     @keyframes faintGlow{0%{box-shadow:0 0 0 rgba(245,158,11,0)}50%{box-shadow:0 0 0 6px rgba(245,158,11,.12)}100%{box-shadow:0 0 0 rgba(245,158,11,0)}}
     .pub.new{position:relative}
     .pub.new::before{
@@ -67,27 +71,31 @@
     .news-date{font-family:'Source Code Pro',ui-monospace,Menlo,Consolas,monospace;color:var(--muted);white-space:nowrap}
     .news-text{line-height:1.6}
 
-    /* --- MOBILE-ONLY IMPROVEMENTS --- */
-    @media (max-width: 640px){ /* sm and below */
-      /* Header blocks order: Name -> Photo -> Description */
-      .blk-name{order:1}
-      .blk-photo{order:2}
-      .blk-desc{order:3;margin-top:.5rem}
-
-      /* Slightly smaller h1 on narrow phones */
-      h1{font-size:2rem;line-height:1.15}
-
-      /* Pub cards become vertical (image on top, full width) */
-      .pub{flex-direction:column}
-      .thumb{
-        width:100%;max-height:220px;aspect-ratio:auto;object-fit:contain;background:#fff; /* no awkward crop */
+    /* Header layout — defined here (not Tailwind) so it applies before any script loads */
+    .header{
+      display:flex;flex-direction:column;gap:1.5rem;margin-top:2rem;
+    }
+    .header-right{text-align:center;}
+    @media(min-width:768px){
+      .header{
+        display:grid;
+        grid-template-columns:2fr 1fr;
+        column-gap:2rem;
+        align-items:start;
       }
-      .pub.new::before{top:8px;right:10px}
+      .header-left{padding-right:2.5rem;}
+      .header-right{text-align:right;margin-top:1.25rem;}
+      .news{margin-top:-2.5rem;}
     }
 
-    @media (min-width: 768px) {            
-      .blk-desc p  { margin-top: -5.0rem; margin-bottom: 0; }  /* description starts closer */
-      .news { margin-top: -2rem; }
+    /* --- MOBILE-ONLY IMPROVEMENTS --- */
+    @media (max-width: 640px){
+      h1{font-size:2rem;line-height:1.15}
+      .pub{flex-direction:column}
+      .thumb{
+        width:100%;max-height:220px;aspect-ratio:auto;object-fit:contain;background:#fff;
+      }
+      .pub.new::before{top:8px;right:10px}
     }
 
   </style>
@@ -96,19 +104,13 @@
 <body>
   <div class="mx-auto max-w-screen-lg px-4 sm:px-6 lg:px-8">
 
-    <div class="header mt-8 flex flex-col gap-6 md:grid md:grid-cols-[2fr_1fr] md:gap-8 md:items-start">
+    <div class="header">
 
-      <!-- A) Name / affiliation -->
-      <div class="blk-name md:col-start-1 md:row-start-1">
+      <!-- Left: name, affiliation, description -->
+      <div class="header-left">
         <h1 class="text-center md:text-left font-semibold text-4xl md:text-5xl text-[var(--uiuc)]">
           Chaitanya Amballa
         </h1>
-        <!-- <p class="text-center md:text-left text-[var(--muted)] mt-2">
-          PhD Student, ECE ·
-          <a class="text-blue-700 hover:text-green-600" href="https://illinois.edu/" target="_blank">
-            University of Illinois Urbana–Champaign
-          </a>
-        </p> -->
         <p class="text-center md:text-left text-[var(--muted)] mt-2 leading-relaxed">
           PhD Student, ECE
           <span class="hidden sm:inline"> · </span>
@@ -124,33 +126,7 @@
             Prof. Romit Roy Choudhury
           </a>
         </p>
-      </div>
-
-      <!-- B) Photo + email + socials (spans both rows on the right) -->
-      <!-- <div class="blk-photo md:col-start-2 md:row-start-1 md:row-span-2 md:justify-self-end w-full"> -->
-      <div class="blk-photo md:col-start-2 md:row-start-1 md:row-span-2 md:justify-self-end w-full md:mt-5">
-
-        <div class="flex justify-center md:justify-end">
-          <a href="images/chaitanya.jpeg">
-            <img class="rounded-lg mb-3 md:ml-4 border border-gray-200 profilePic"
-                src="images/chaitanya_banner.png" alt="profile photo" decoding="async" loading="lazy">
-          </a>
-        </div>
-        <p class="text-center md:text-right text-[var(--muted)]">
-          <span class="monoEmail">amballa2@illinois.edu</span>
-        </p>
-        <div class="socials-right mt-2 text-center md:text-right">
-          <a class="slink" href="data/pdfs/Chaitanya_Amballa_CV.pdf" target="_blank">CV</a>
-          <a class="slink" href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank">Scholar</a>
-          <a class="slink" href="https://github.com/achaitu/" target="_blank">GitHub</a>
-          <a class="slink" href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank">LinkedIn</a>
-        </div>
-      </div>
-
-      <!-- C) Description (now directly under the name on desktop) -->
-      <div class="blk-desc md:col-start-1 md:row-start-2 md:pr-10">
-      <!-- <div class="blk-desc md:col-start-1 md:row-start-2 md:pr-10 md:mt-10000.5"> -->
-        <p class="text-center md:text-left">
+        <p class="text-center md:text-left mt-8">
           My research lies at the intersection of generative modeling, signal processing, and learning for spatial inference.
           More recently, I am interested in diffusion models for inverse problems. I also received an MS degree in ECE from UIUC.
           In a previous life, I have worked on reinforcement learning, bandits, and wireless networks, as a researcher at
@@ -160,14 +136,35 @@
           advised by <a class="text-blue-700 hover:text-green-600" href="https://sites.google.com/iittp.ac.in/naveenkp/" target="_blank">Prof. K. P. Naveen</a>.
         </p>
       </div>
+
+      <!-- Right: photo, email, socials -->
+      <div class="header-right">
+        <div class="flex justify-center md:justify-end">
+          <a href="images/chaitanya.jpeg">
+            <img class="rounded-lg mb-3 border border-gray-200 profilePic"
+                src="images/chaitanya_banner.png" alt="profile photo" width="280" height="280" decoding="async" loading="eager">
+          </a>
+        </div>
+        <p class="text-[var(--muted)]">
+          <!-- donot remove the commeneted lines in any code changes. I might want to switch these -->
+          <!-- <span class="monoEmail">amballa2@illinois.edu</span>  --> 
+          <span class="monoEmail" style="font-size:1.25rem">amballa2@illinois.edu</span>
+          <!-- <span style="font-family:'EB Garamond',Georgia,serif;font-size:1.25rem;letter-spacing:.03em;">amballa2 at illinois dot edu</span> -->
+        </p>
+        <div class="socials-right mt-2">
+          <a class="slink" href="data/pdfs/Chaitanya_Amballa_CV.pdf" target="_blank">CV</a>
+          <a class="slink" href="https://scholar.google.com/citations?user=xWSXomQAAAAJ&hl=en&" target="_blank">Scholar</a>
+          <a class="slink" href="https://github.com/achaitu/" target="_blank">GitHub</a>
+          <a class="slink" href="https://www.linkedin.com/in/chaitanya-amballa/" target="_blank">LinkedIn</a>
+        </div>
+      </div>
     </div>
 
-
-
-    <!-- News (unchanged, with small pull-up on desktop) -->
-    <section class="news pullup" aria-labelledby="news">
+    <!-- News -->
+    <section class="news" aria-labelledby="news">
       <h2 id="news" class="text-2xl md:text-3xl font-semibold">News</h2>
       <ul class="news-list">
+        <li class="news-item"><div class="news-date">Apr 2026</div><div class="news-text"><strong>Received Shun Lien Chuang Memorial Award</strong></div></li>
         <li class="news-item"><div class="news-date">Jan 2026</div><div class="news-text"><strong>CoGuide accepted to ICLR 2026</strong></div></li>
         <li class="news-item"><div class="news-date">Sep 2025</div><div class="news-text"><strong>EchoNeRF accepted to NeurIPS 2025</strong></div></li>
         <li class="news-item"><div class="news-date">May 2025</div><div class="news-text"><strong>Joined Amazon as an Applied Scientist Intern</strong></div></li>
@@ -176,8 +173,28 @@
       </ul>
     </section>
 
-    <!-- Publications -->
+    <!-- Preprints -->
     <div class="py-6">
+      <h2 class="text-2xl md:text-3xl font-semibold" id="preprints">Preprints <span style="font-size: 0.75rem; font-weight: 400; color: var(--muted);">(*=equal contribution)</span></h2>
+
+      <!-- DLPS -->
+      <div class="pub new mt-2">
+        <img class="thumb" src="images/dlps_thumb.png" alt="DLPS thumbnail" decoding="async" loading="lazy">
+        <div>
+          <!-- <div class="venue"></div> -->
+          <a class="title hover:underline" href="https://arxiv.org/abs/2605.09302" target="_blank">Discrete Langevin-Inspired Posterior Sampling</a>
+          <p class="meta"><b>Chaitanya Amballa*</b>, Sattwik Basu*, Jorge Vančo Sampedro, Romit Roy Choudhury</p>
+          <div class="mt-2">
+            <a class="plink" href="https://arxiv.org/abs/2605.09302" target="_blank">[arXiv]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://arxiv.org/pdf/2605.09302" target="_blank">[PDF]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publications -->
+    <div class="pt-0 pb-6">
       <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications <span style="font-size: 0.75rem; font-weight: 400; color: var(--muted);">(*=equal contribution, <span style="display: inline-block; width: 1.5rem; height: 0.85rem; background: #fff8eb; border: 1px solid #f59e0b; border-radius: 0.25rem; vertical-align: middle; margin: 0 0.2rem;"></span>=highlights)</span></h2>
 
       <!-- ICLR 2026 -->
@@ -185,8 +202,15 @@
         <img class="thumb" src="images/coguide_thumb.png" alt="CoGuide thumbnail" decoding="async" loading="lazy">
         <div>
           <div class="venue">ICLR&nbsp;2026</div>
-          <a class="title hover:underline" href="https://arxiv.org/pdf/2509.26489" target="_blank">CoGuide: Contrastive Diffusion Guidance for Spatial Inverse Problems</a>
+          <a class="title hover:underline" href="https://arxiv.org/abs/2509.26489" target="_blank">CoGuide: Contrastive Diffusion Guidance for Spatial Inverse Problems</a>
           <p class="meta">Sattwik Basu*, <b>Chaitanya Amballa*</b>, Zhongweiyang Xu, Jorge Vančo Sampedro, Srihari Nelakuditi, Romit Roy Choudhury</p>
+          <div class="mt-2">
+            <a class="plink" href="https://arxiv.org/abs/2509.26489" target="_blank">[arXiv]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://arxiv.org/pdf/2509.26489" target="_blank">[PDF]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://coguide.github.io/" target="_blank">[Project]</a>
+          </div>
           <p class="mt-3">
             We reconstruct indoor floorplans from sparse user trajectories by steering a diffusion prior with a (surrogate) likelihood score from a contrastive trajectory–layout embedding space.
           </p>
@@ -201,7 +225,7 @@
           <a class="title hover:underline" href="#" target="_blank">Inferring Indoor Layouts using Audio</a>
           <p class="meta">Zhijian Yang, Sattwik Basu*, <b>Chaitanya Amballa*</b>, Debottam Dutta, Srihari Nelakuditi, Romit Roy Choudhury</p>
           <div class="mt-2">
-            <a class="plink" href="#" target="_blank">[PDF]</a>
+            <a class="plink" href="https://dl.acm.org/doi/pdf/10.1145/3789514.3792049" target="_blank">[PDF]</a>
           </div>
         </div>
       </div>
