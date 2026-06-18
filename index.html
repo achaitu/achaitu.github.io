@@ -30,8 +30,9 @@
     .socials-right .slink:hover{color:#0b1f5e;text-decoration:underline}
     .socials-right .slink+.slink::before{content:"•";color:#9aa3b2;margin:0 .55rem}
 
-    /* Publication cards */
-    .pub{display:flex;gap:1.5rem;padding:1.25rem 1rem;border-radius:.6rem;border-left:3px solid transparent;transition:background .2s,box-shadow .2s}
+    /* Publication / preprint cards (shared .pub-list + .pub markup) */
+    .pub{display:flex;gap:1.35rem;padding:.95rem 1rem;border-radius:.6rem;border-left:3px solid transparent;transition:background .2s,box-shadow .2s}
+    .pub-list .pub + .pub{margin-top:.65rem}
     .pub:hover{background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.06)}
     .thumb{
       width:12rem;height:8rem;object-fit:contain;
@@ -54,6 +55,7 @@
     @media(prefers-reduced-motion:reduce){.pub.new::before{animation:none}}
 
     .plink{font-size:.95rem;color:#374151}.plink:hover{color:#111827;text-decoration:underline}
+    .mlink{color:#374151;text-decoration:none}.mlink:hover{color:#111827;text-decoration:underline}
     .sep{color:#c4c6cf;margin:0 .45rem}
 
     /* Email */
@@ -65,13 +67,25 @@
     /* News */
     .news{margin-top:2rem}
     .news h2{margin-bottom:.75rem}
-    .news-list{list-style:none;padding:0;margin:.5rem 0 0 0}
-    .news-item{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;padding:.75rem 0;border-bottom:1px solid #eee}
-    .news-item:last-child{border-bottom:none}
-    .news-date{font-family:'Source Code Pro',ui-monospace,Menlo,Consolas,monospace;color:var(--muted);white-space:nowrap}
-    .news-text{line-height:1.6}
+    .news-list{
+      list-style:none;padding:0;margin:.5rem 0 0 0;
+      max-height:13.5rem;overflow-y:auto;
+      scrollbar-width:none;-ms-overflow-style:none;
+    }
+    .news-list::-webkit-scrollbar{display:none}
 
-    /* Header layout — defined here (not Tailwind) so it applies before any script loads */
+    .h2-note{font-size:.75rem;font-weight:400;color:var(--muted)}
+    .highlight-swatch{
+      display:inline-block;width:1.5rem;height:.85rem;background:#fff8eb;
+      border:1px solid #f59e0b;border-radius:.25rem;vertical-align:middle;margin:0 .2rem;
+    }
+
+    .news-item{display:grid;grid-template-columns:7.5rem 1fr;gap:.75rem;padding:.35rem 0;border-bottom:1px solid #eee}
+    .news-item:last-child{border-bottom:none}
+    .news-date{font-family:'Source Code Pro',ui-monospace,Menlo,Consolas,monospace;color:var(--muted);white-space:nowrap;font-size:.92rem}
+    .news-text{line-height:1.45}
+
+    /* Header layout — desktop matches published site; mobile reorders via flex */
     .header{
       display:flex;flex-direction:column;gap:1.5rem;margin-top:2rem;
     }
@@ -89,13 +103,38 @@
     }
 
     /* --- MOBILE-ONLY IMPROVEMENTS --- */
-    @media (max-width: 640px){
+    @media (max-width: 767px){
+      body{font-size:17px;line-height:1.65}
       h1{font-size:2rem;line-height:1.15}
-      .pub{flex-direction:column}
-      .thumb{
-        width:100%;max-height:220px;aspect-ratio:auto;object-fit:contain;background:#fff;
+      h2{font-size:1.4rem}
+      h3{font-size:1.1rem}
+
+      .header{display:flex;flex-direction:column;gap:1rem}
+      .header-left{display:contents}
+      .header-intro{order:1}
+      .header-right{order:2}
+      .header-bio{order:3;margin-top:0}
+      #publications .h2-note{display:block;margin-top:.15rem}
+
+      .profilePic{max-width:220px}
+      .monoEmail{font-size:.9rem;white-space:normal;word-break:break-all}
+
+      .news{margin-top:1.5rem}
+      .news-list{
+        max-height:12rem;
+        -webkit-overflow-scrolling:touch;
       }
-      .pub.new::before{top:8px;right:10px}
+      .news-item{grid-template-columns:5.5rem 1fr;gap:.5rem}
+
+      .pub-section{padding-top:1.5rem;padding-bottom:1.5rem}
+      .pub{padding:.55rem .5rem;gap:0}
+      .pub-list .pub + .pub{margin-top:.4rem}
+      .pub .thumb,.pub .pub-blurb{display:none}
+      .pub .venue{font-size:.9rem;margin-bottom:.1rem}
+      .pub .meta{font-size:.95rem;line-height:1.5}
+      .pub.new::before{top:6px;right:8px;font-size:10px;padding:2px 7px}
+
+      .py-8{padding-top:1.75rem;padding-bottom:1.75rem}
     }
 
   </style>
@@ -106,27 +145,30 @@
 
     <div class="header">
 
-      <!-- Left: name, affiliation, description -->
+      <!-- Left: name, affiliation, advisor, bio (desktop) -->
       <div class="header-left">
-        <h1 class="text-center md:text-left font-semibold text-4xl md:text-5xl text-[var(--uiuc)]">
-          Chaitanya Amballa
-        </h1>
-        <p class="text-center md:text-left text-[var(--muted)] mt-2 leading-relaxed">
-          PhD Student, ECE
-          <span class="hidden sm:inline"> · </span>
-          <a class="block sm:inline text-blue-700 hover:text-green-600"
-            href="https://illinois.edu/" target="_blank">
-            University of Illinois&nbsp;Urbana–Champaign
-          </a>
-        </p>
-        <p class="text-center md:text-left mt-1">
-          <a class="text-blue-700 hover:text-green-600" href="https://sinrg.csl.illinois.edu" target="_blank">SiNRG</a> ·
-          advised by
-          <a class="text-blue-700 hover:text-green-600" href="https://croy.web.engr.illinois.edu/" target="_blank">
-            Prof. Romit Roy Choudhury
-          </a>
-        </p>
-        <p class="text-center md:text-left mt-8">
+        <div class="header-intro">
+          <h1 class="text-center md:text-left font-semibold text-4xl md:text-5xl text-[var(--uiuc)]">
+            Chaitanya Amballa
+          </h1>
+          <p class="text-center md:text-left text-[var(--muted)] mt-2 leading-relaxed">
+            PhD Student, ECE
+            <span class="hidden sm:inline"> · </span>
+            <a class="block sm:inline text-blue-700 hover:text-green-600"
+              href="https://illinois.edu/" target="_blank">
+              University of Illinois&nbsp;Urbana–Champaign
+            </a>
+          </p>
+          <p class="text-center md:text-left mt-1">
+            <a class="text-blue-700 hover:text-green-600" href="https://sinrg.csl.illinois.edu" target="_blank">SiNRG</a> ·
+            advised by
+            <a class="text-blue-700 hover:text-green-600" href="https://croy.web.engr.illinois.edu/" target="_blank">
+              Prof. Romit Roy Choudhury
+            </a>
+          </p>
+        </div>
+
+        <p class="header-bio text-center md:text-left mt-8">
           My research lies at the intersection of generative modeling, signal processing, and learning for spatial inference.
           More recently, I am interested in diffusion models for inverse problems. I also received an MS degree in ECE from UIUC.
           In a previous life, I have worked on reinforcement learning, bandits, and wireless networks, as a researcher at
@@ -148,7 +190,7 @@
         <p class="text-[var(--muted)]">
           <!-- donot remove the commeneted lines in any code changes. I might want to switch these -->
           <!-- <span class="monoEmail">amballa2@illinois.edu</span>  --> 
-          <span class="monoEmail" style="font-size:1.25rem">amballa2@illinois.edu</span>
+          <span class="monoEmail" style="font-size:1.1rem">amballa2@illinois.edu</span>
           <!-- <span style="font-family:'EB Garamond',Georgia,serif;font-size:1.25rem;letter-spacing:.03em;">amballa2 at illinois dot edu</span> -->
         </p>
         <div class="socials-right mt-2">
@@ -164,8 +206,12 @@
     <section class="news" aria-labelledby="news">
       <h2 id="news" class="text-2xl md:text-3xl font-semibold">News</h2>
       <ul class="news-list">
+        <li class="news-item"><div class="news-date">Jun 2026</div><div class="news-text"><strong>ΔLPS accepted to SPIGM Workshop at ICML 2026</strong></div></li>
+        <li class="news-item"><div class="news-date">Jun 2026</div><div class="news-text"><strong>MiNAF accepted to Interspeech 2026</strong></div></li>
+        <li class="news-item"><div class="news-date">Jun 2026</div><div class="news-text"><strong>AudioCoGuide accepted to ML for Audio Workshop at ICML 2026</strong></div></li>
+        <li class="news-item"><div class="news-date">May 2026</div><div class="news-text"><strong>Back at Amazon in Boston for the summer!</strong> ☀️</div></li>
         <li class="news-item"><div class="news-date">Apr 2026</div><div class="news-text"><strong>Received Shun Lien Chuang Memorial Award</strong></div></li>
-        <li class="news-item"><div class="news-date">Feb 2026</div><div class="news-text"><strong>Best Poster Award at HotMobile</strong></div></li>
+        <li class="news-item"><div class="news-date">Feb 2026</div><div class="news-text"><strong>Best Poster Award at HotMobile 2026</strong></div></li>
         <li class="news-item"><div class="news-date">Jan 2026</div><div class="news-text"><strong>CoGuide accepted to ICLR 2026</strong></div></li>
         <li class="news-item"><div class="news-date">Sep 2025</div><div class="news-text"><strong>EchoNeRF accepted to NeurIPS 2025</strong></div></li>
         <li class="news-item"><div class="news-date">May 2025</div><div class="news-text"><strong>Joined Amazon as an Applied Scientist Intern</strong></div></li>
@@ -175,11 +221,12 @@
     </section>
 
     <!-- Preprints -->
-    <div class="py-6">
-      <h2 class="text-2xl md:text-3xl font-semibold" id="preprints">Preprints <span style="font-size: 0.75rem; font-weight: 400; color: var(--muted);">(*=equal contribution)</span></h2>
+    <div class="pub-section pt-6 pb-6">
+      <h2 class="text-2xl md:text-3xl font-semibold" id="preprints">Preprints <span class="h2-note">(*=equal contribution)</span></h2>
 
+      <div class="pub-list">
       <!-- DLPS -->
-      <div class="pub new mt-2">
+      <div class="pub new">
         <img class="thumb" src="images/dlps_thumb.png" alt="DLPS thumbnail" decoding="async" loading="lazy">
         <div>
           <!-- <div class="venue"></div> -->
@@ -192,14 +239,46 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
 
     <!-- Publications -->
-    <div class="pt-0 pb-6">
-      <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications <span style="font-size: 0.75rem; font-weight: 400; color: var(--muted);">(*=equal contribution, <span style="display: inline-block; width: 1.5rem; height: 0.85rem; background: #fff8eb; border: 1px solid #f59e0b; border-radius: 0.25rem; vertical-align: middle; margin: 0 0.2rem;"></span>=highlights)</span></h2>
+    <div class="pub-section pb-6">
+      <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications <span class="h2-note">(*=equal contribution, <span class="highlight-swatch" aria-hidden="true"></span>=highlights)</span></h2>
+
+      <div class="pub-list">
+      <!-- Interspeech 2026 -->
+      <div class="pub new">
+        <img class="thumb" src="images/minaf_thumb.png" alt="MiNAF thumbnail" decoding="async" loading="lazy">
+        <div>
+          <div class="venue">Interspeech&nbsp;2026</div>
+          <a class="title hover:underline" href="https://arxiv.org/abs/2509.15210" target="_blank">Explicit Context-Driven Neural Acoustic Modeling for High-Fidelity RIR Generation</a>
+          <p class="meta">Chen Si, Qianyi Wu, <b>Chaitanya Amballa</b>, Romit Roy Choudhury</p>
+          <div class="mt-2">
+            <a class="plink" href="https://arxiv.org/abs/2509.15210" target="_blank">[arXiv]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://arxiv.org/pdf/2509.15210" target="_blank">[PDF]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://chen-si-cs.github.io/projects/MiNAF/" target="_blank">[Project]</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ICML Workshop 2026 -->
+      <div class="pub">
+        <img class="thumb" src="images/audiocoguide_thumb.png" alt="AudioCoGuide thumbnail" decoding="async" loading="lazy">
+        <div>
+          <div class="venue">ICML Workshop&nbsp;2026 · ML for Audio</div>
+          <a class="title hover:underline" href="https://audio-coguide.github.io/" target="_blank">Blind Audio Restoration using Contrastive Diffusion Guidance</a>
+          <p class="meta">Sattwik Basu*, <b>Chaitanya Amballa*</b>, Zhongweiyang Xu, Jorge Vančo Sampedro, Srihari Nelakuditi, Romit Roy Choudhury</p>
+          <div class="mt-2">
+            <a class="plink" href="https://audio-coguide.github.io/" target="_blank">[Project]</a>
+          </div>
+        </div>
+      </div>
 
       <!-- ICLR 2026 -->
-      <div class="pub featured new mt-2">
+      <div class="pub featured">
         <img class="thumb" src="images/coguide_thumb.png" alt="CoGuide thumbnail" decoding="async" loading="lazy">
         <div>
           <div class="venue">ICLR&nbsp;2026</div>
@@ -212,14 +291,14 @@
             <span class="sep">•</span>
             <a class="plink" href="https://coguide.github.io/" target="_blank">[Project]</a>
           </div>
-          <p class="mt-3">
+          <p class="pub-blurb mt-3">
             We reconstruct indoor floorplans from sparse user trajectories by steering a diffusion prior with a (surrogate) likelihood score from a contrastive trajectory–layout embedding space.
           </p>
         </div>
       </div>
 
       <!-- HotMobile 2026 -->
-      <div class="pub new mt-4">
+      <div class="pub">
         <img class="thumb" src="images/hotmobile_thumb.png" alt="HotMobile thumbnail" decoding="async" loading="lazy">
         <div>
           <div class="venue">HotMobile&nbsp;2026</div>
@@ -232,7 +311,7 @@
       </div>
 
       <!-- NeurIPS 2025 -->
-      <div class="pub featured mt-4">
+      <div class="pub featured">
         <img class="thumb" src="images/echonerf_thumb.png" alt="EchoNeRF thumbnail" decoding="async" loading="lazy">
         <div>
           <div class="venue">NeurIPS&nbsp;2025</div>
@@ -245,7 +324,7 @@
             <span class="sep">•</span>
             <a class="plink" href="https://echonerf.github.io/" target="_blank">[Project]</a>
           </div>
-          <p class="mt-3">
+          <p class="pub-blurb mt-3">
             We adapt NeRFs to learn from multipath RF/audio signals to infer indoor structure without cameras,
             enabling floorplan reconstruction and forward tasks like signal prediction.
           </p>
@@ -253,7 +332,7 @@
       </div>
 
       <!-- UAI 2022 -->
-      <div class="pub mt-4">
+      <div class="pub">
         <img class="thumb" src="images/UAI_22.png" alt="UAI 2022" decoding="async" loading="lazy">
         <div>
           <div class="venue">UAI&nbsp;2022</div>
@@ -270,7 +349,7 @@
       </div>
 
       <!-- AAAI 2021 -->
-      <div class="pub mt-4">
+      <div class="pub">
         <img class="thumb" src="images/AAAI_21.png" alt="AAAI 2021" decoding="async" loading="lazy">
         <div>
           <div class="venue">AAAI&nbsp;2021</div>
@@ -287,7 +366,7 @@
       </div>
 
       <!-- COMSNETS 2021 -->
-      <div class="pub mt-4">
+      <div class="pub">
         <img class="thumb" src="images/COMSNETS_21.png" alt="COMSNETS 2021" decoding="async" loading="lazy">
         <div>
           <div class="venue">COMSNETS&nbsp;2021</div>
@@ -302,7 +381,7 @@
       </div>
 
       <!-- ICML Workshop 2020 -->
-      <div class="pub mt-4">
+      <div class="pub">
         <img class="thumb" src="images/ICML_20.png" alt="ICML Workshop 2020" decoding="async" loading="lazy">
         <div>
           <div class="venue">ICML Workshop&nbsp;2020</div>
@@ -317,7 +396,7 @@
       </div>
 
       <!-- SPCOM 2020 -->
-      <div class="pub mt-4">
+      <div class="pub">
         <img class="thumb" src="images/SPCOM_20.png" alt="SPCOM 2020" decoding="async" loading="lazy">
         <div>
           <div class="venue">SPCOM&nbsp;2020</div>
@@ -329,6 +408,7 @@
             <a class="plink" href="https://ieeexplore.ieee.org/document/9179532" target="_blank">[PDF]</a>
           </div>
         </div>
+      </div>
       </div>
     </div>
 
@@ -344,6 +424,13 @@
           <li>ECE 534: Random Processes</li>
           <li>ECE 586: MDPs and Reinforcement Learning</li>
           <li>ECE 490: Introduction to Optimization</li>
+        </ul>
+      </div>
+      <div class="mt-4">
+        <h3 class="text-xl font-semibold">Teaching Assistant</h3>
+        <ul class="list-disc pl-6 mt-2 space-y-1">
+          <li><a class="mlink" href="https://rrc-uiuc.notion.site/gen-models-sp26" target="_blank">ECE 498/598 Deep Generative Models</a></li>
+          <li><a class="mlink" href="https://rrc-uiuc.notion.site/Real-World-Algorithms-for-IoT-and-Data-Science-Sp24-1b94156dae404cb3a1c3e22073618d4e" target="_blank">ECE 434: Real-World Algorithms for IoT and Data Science</a></li>
         </ul>
       </div>
       <div class="mt-4">
