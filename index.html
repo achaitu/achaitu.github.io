@@ -204,6 +204,7 @@
     <section class="news" aria-labelledby="news">
       <h2 id="news" class="text-2xl md:text-3xl font-semibold">News</h2>
       <ul class="news-list">
+        <li class="news-item"><div class="news-date">Sep 2026</div><div class="news-text"><strong>ΔLPS accepted to NeurIPS 2026</strong></div></li>
         <li class="news-item"><div class="news-date">Jun 2026</div><div class="news-text"><strong>ΔLPS accepted to SPIGM Workshop at ICML 2026</strong></div></li>
         <li class="news-item"><div class="news-date">Jun 2026</div><div class="news-text"><strong>MiNAF accepted to Interspeech 2026</strong></div></li>
         <li class="news-item"><div class="news-date">Jun 2026</div><div class="news-text"><strong>AudioCoGuide accepted to ML for Audio Workshop at ICML 2026</strong></div></li>
@@ -223,17 +224,18 @@
       <h2 class="text-2xl md:text-3xl font-semibold" id="preprints">Preprints <span class="h2-note">(*=equal contribution)</span></h2>
 
       <div class="pub-list">
-      <!-- DLPS -->
+      <!-- RIR Flows -->
       <div class="pub new">
-        <img class="thumb" src="images/dlps_thumb.png" alt="DLPS thumbnail" decoding="async" loading="lazy">
+        <img class="thumb" src="images/choir_thumb.png" alt="CHOIR thumbnail" decoding="async" loading="lazy">
         <div>
           <!-- <div class="venue"></div> -->
-          <a class="title hover:underline" href="https://arxiv.org/abs/2605.09302" target="_blank">Discrete Langevin-Inspired Posterior Sampling</a>
-          <p class="meta"><b>Chaitanya Amballa*</b>, Sattwik Basu*, Jorge Vančo Sampedro, Romit Roy Choudhury</p>
+          <a class="title hover:underline" href="#" target="_blank">Generating High-Fidelity Impulse Responses using Conditional Flows</a>
+          <p class="meta"><b>Chaitanya Amballa</b>, Ayush Barik, Haoxiang Lin, Zhen Sun, Mehmet Ergezer, Vamshi Krishna Chillara, Wontak Kim, Romit Roy Choudhury</p>
           <div class="mt-2">
-            <a class="plink" href="https://arxiv.org/abs/2605.09302" target="_blank">[arXiv]</a>
+            <!-- TODO: fill in PDF and project page URLs -->
+            <a class="plink" href="#" target="_blank">[PDF]</a>
             <span class="sep">•</span>
-            <a class="plink" href="https://arxiv.org/pdf/2605.09302" target="_blank">[PDF]</a>
+            <a class="plink" href="#" target="_blank">[Project]</a>
           </div>
         </div>
       </div>
@@ -245,6 +247,24 @@
       <h2 class="text-2xl md:text-3xl font-semibold" id="publications">Publications <span class="h2-note">(*=equal contribution, <span class="highlight-swatch" aria-hidden="true"></span>=highlights)</span></h2>
 
       <div class="pub-list">
+      <!-- NeurIPS 2026 -->
+      <div class="pub featured new">
+        <img class="thumb" src="images/dlps_thumb_sq.png" alt="DLPS thumbnail" decoding="async" loading="lazy">
+        <div>
+          <div class="venue">NeurIPS&nbsp;2026</div>
+          <a class="title hover:underline" href="https://arxiv.org/abs/2605.09302" target="_blank">Discrete Langevin-Inspired Posterior Sampling</a>
+          <p class="meta"><b>Chaitanya Amballa*</b>, Sattwik Basu*, Jorge Vančo Sampedro, Romit Roy Choudhury</p>
+          <div class="mt-2">
+            <a class="plink" href="https://arxiv.org/abs/2605.09302" target="_blank">[arXiv]</a>
+            <span class="sep">•</span>
+            <a class="plink" href="https://arxiv.org/pdf/2605.09302" target="_blank">[PDF]</a>
+          </div>
+          <p class="pub-blurb mt-3">
+            We propose ΔLPS, a training-free posterior sampler that works entirely in discrete space with parallel token updates, for any discrete diffusion prior.
+          </p>
+        </div>
+      </div>
+
       <!-- Interspeech 2026 -->
       <div class="pub new">
         <img class="thumb" src="images/minaf_thumb.png" alt="MiNAF thumbnail" decoding="async" loading="lazy">
